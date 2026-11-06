@@ -1,0 +1,20 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Bloquear acceso a archivos sensibles
+    RewriteRule ^\.env - [F,L]
+    RewriteRule ^\.git - [F,L]
+    RewriteRule ^src/ - [F,L]
+    RewriteRule ^templates/ - [F,L]
+    RewriteRule ^bin/ - [F,L]
+    RewriteRule ^docs/ - [F,L]
+
+    # Redirigir la raíz hacia public/
+    RewriteRule ^$ public/ [L]
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>

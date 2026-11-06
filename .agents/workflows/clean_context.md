@@ -7,3 +7,4 @@ description: Limpia y sintetiza MEMORY.md de NikonCoach preservando la arquitect
 1. Revisa `MEMORY.md` y condensa el historial de sesiones antiguas en hitos clave.
 2. Preserva intacto el hardware profile (Nikon D5500 + lentes), la arquitectura y el roadmap.
 3. Ejecuta backup antes de sobreescribir.
+

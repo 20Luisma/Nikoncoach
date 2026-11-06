@@ -73,3 +73,4 @@ sleep 1
 HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://contenido.creawebes.com/NikonCoach/ || echo "000")
 echo "🌐 Código HTTP obtenido: $HTTP_STATUS"
 echo "========================================================"
+

@@ -70,3 +70,4 @@ find src public templates -name "*.php" -exec php -l {} \;
 # Verificar HTTP post-deploy
 curl -s -o /dev/null -w "%{http_code}" https://contenido.creawebes.com/NikonCoach/
 ```
+

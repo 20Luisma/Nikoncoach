@@ -11,3 +11,4 @@ mkdir -p "$BACKUP_DIR"
 cp "$DIR/MEMORY.md" "$BACKUP_FILE"
 
 echo "✅ Backup guardado en: memory_backups/MEMORY_$TIMESTAMP.md"
+

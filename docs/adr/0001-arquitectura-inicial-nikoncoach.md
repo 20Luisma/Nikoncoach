@@ -16,3 +16,4 @@ Martín necesita una aplicación web rápida, interactiva y desacoplada que act�
 - Cero dependencias volátiles de terceros.
 - Tiempos de respuesta inferiores a 200ms.
 - Reproducibilidad 1:1 en local y producción.
+
