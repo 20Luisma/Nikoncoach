@@ -57,14 +57,16 @@ sshpass -p "$VPS_PASS" rsync -avz --delete \
 
 # 4. Asegurar permisos de seguridad y runtime .env
 echo "🔐 4. Configurando permisos y variables de entorno en VPS..."
-sshpass -p "$VPS_PASS" ssh -o StrictHostKeyChecking=no -p "$VPS_PORT" "$VPS_USER@$VPS_HOST" "chmod 755 '$VPS_REMOTE_PATH' && find '$VPS_REMOTE_PATH' -type f -exec chmod 644 {} \;
-cat << 'EOF' > '$VPS_REMOTE_PATH/.env'
+sshpass -p "$VPS_PASS" ssh -o StrictHostKeyChecking=no -p "$VPS_PORT" "$VPS_USER@$VPS_HOST" "chmod 755 '$VPS_REMOTE_PATH' && find '$VPS_REMOTE_PATH' -type f -exec chmod 644 {} \;"
+
+sshpass -p "$VPS_PASS" ssh -o StrictHostKeyChecking=no -p "$VPS_PORT" "$VPS_USER@$VPS_HOST" "cat > '$VPS_REMOTE_PATH/.env'" << EOF
 APP_ENV=production
 APP_NAME=NikonCoach
 APP_URL=https://contenido.creawebes.com/NikonCoach
-GEMINI_API_KEY=$GEMINI_API_KEY
+GEMINI_API_KEY=${GEMINI_API_KEY:-}
 EOF
-chmod 600 '$VPS_REMOTE_PATH/.env'"
+
+sshpass -p "$VPS_PASS" ssh -o StrictHostKeyChecking=no -p "$VPS_PORT" "$VPS_USER@$VPS_HOST" "chmod 600 '$VPS_REMOTE_PATH/.env'"
 
 # 5. Verificación HTTP post-despliegue
 echo "========================================================"

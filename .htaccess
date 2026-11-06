@@ -9,10 +9,9 @@
     RewriteRule ^bin/ - [F,L]
     RewriteRule ^docs/ - [F,L]
 
-    # Redirigir la raíz hacia public/
+    # Redirigir todo hacia public/
     RewriteRule ^$ public/ [L]
-    RewriteCond %{REQUEST_URI} !^/public/
-    RewriteRule ^(.*)$ public/$1 [L]
+    RewriteRule ^((?!public).*)$ public/$1 [L,NC]
 </IfModule>
 
 <FilesMatch "^\.">

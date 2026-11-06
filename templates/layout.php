@@ -6,7 +6,7 @@ declare(strict_types=1);
  * @var string $pageTitle
  * @var string $content
  */
-$basePath = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/\\');
+$basePath = str_contains($_SERVER['REQUEST_URI'] ?? '', '/NikonCoach') ? '/NikonCoach' : '';
 ?>
 <!DOCTYPE html>
 <html lang="es">

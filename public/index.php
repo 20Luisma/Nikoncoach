@@ -50,12 +50,9 @@ $apiController = new ApiController(
 $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
 $path = parse_url($requestUri, PHP_URL_PATH) ?? '/';
 
-// Remover prefijo de subcarpeta si existe
-$scriptName = dirname($_SERVER['SCRIPT_NAME'] ?? '');
-if ($scriptName !== '/' && $scriptName !== '\\' && str_starts_with($path, $scriptName)) {
-    $path = substr($path, strlen($scriptName));
-}
-$path = '/' . ltrim($path, '/');
+// Normalizar quitando prefijos de subcarpeta como /NikonCoach o /NikonCoach/public
+$path = preg_replace('#^/NikonCoach(/public)?#i', '', $path);
+$path = '/' . trim($path, '/');
 
 // Enrutador
 switch ($path) {
