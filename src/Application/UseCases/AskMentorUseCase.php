@@ -25,3 +25,4 @@ final readonly class AskMentorUseCase
         return $this->geminiClient->askCoach($cleanQuestion, $sceneContext);
     }
 }
+

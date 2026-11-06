@@ -20,3 +20,4 @@ final readonly class PhotoScene
         public bool $isWalkingLongDistance = false
     ) {}
 }
+

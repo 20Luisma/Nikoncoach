@@ -25,3 +25,4 @@ $basePath = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/\\');
     <script src="<?= $basePath ?>/js/app.js"></script>
 </body>
 </html>
+

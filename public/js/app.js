@@ -386,3 +386,4 @@ document.addEventListener('DOMContentLoaded', () => {
     if (distanceSlider) updateDistanceUI(distanceSlider.value);
     syncFocalBounds();
 });
+

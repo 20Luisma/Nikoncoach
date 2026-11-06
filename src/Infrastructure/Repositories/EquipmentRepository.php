@@ -97,3 +97,4 @@ final class EquipmentRepository implements EquipmentRepositoryInterface
         return $this->lenses[$id] ?? null;
     }
 }
+

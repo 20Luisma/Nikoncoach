@@ -65,3 +65,4 @@ final readonly class Lens
         return 8.0;
     }
 }
+

@@ -18,3 +18,4 @@ interface EquipmentRepositoryInterface
 
     public function getLensById(string $id): ?Lens;
 }
+

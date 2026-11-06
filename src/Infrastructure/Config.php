@@ -53,3 +53,4 @@ final class Config
         return $default;
     }
 }
+
