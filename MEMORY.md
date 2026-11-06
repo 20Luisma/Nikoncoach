@@ -51,8 +51,9 @@
 - [x] UI Dark Mode Nikon: `templates/home.php`, `templates/layout.php`, `public/css/style.css`
 - [x] Lógica de interacción desacoplada: `public/js/app.js` (alerta de 50cm en vivo, límites de focal dinámicos, chat)
 - [x] Validación y tests del dominio: 8/8 tests aprobados
-- [ ] Subida a GitHub (`20Luisma/NikonCoach`)
-- [ ] Despliegue a Hostinger (`contenido.creawebes.com/NikonCoach/`)
+- [x] Subida a GitHub (`https://github.com/20Luisma/Nikoncoach`)
+- [x] Despliegue a Hostinger (`https://contenido.creawebes.com/NikonCoach/`) con verificación HTTP 200 y endpoints probados en vivo
+- [x] Tag Git creado y sincronizado (`v-estable-2026-11-07`)
 
 ---
 
