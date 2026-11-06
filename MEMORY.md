@@ -10,7 +10,7 @@
 
 **Propietario:** Martín (Esparreguera, Barcelona)  
 **Hostinger:** `contenido.creawebes.com/NikonCoach/`  
-**GitHub:** `20Luisma/NikonCoach`
+**GitHub:** `https://github.com/20Luisma/Nikoncoach`
 
 ---
 
