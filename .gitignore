@@ -1,0 +1,26 @@
+# Credenciales y variables de entorno
+.env
+.env.production
+*.env
+
+# Dependencias y caché
+vendor/
+node_modules/
+.cache/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Almacenamiento local
+storage/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
