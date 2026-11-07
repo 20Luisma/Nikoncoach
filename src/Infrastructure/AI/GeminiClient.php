@@ -15,7 +15,7 @@ final class GeminiClient
     public function __construct()
     {
         $this->apiKey = (string) Config::get('GEMINI_API_KEY', '');
-        $this->model = (string) Config::get('GEMINI_MODEL', 'gemini-2.5-flash');
+        $this->model = (string) Config::get('GEMINI_MODEL', 'gemini-3.8-flash');
         $this->baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
     }
 
@@ -69,6 +69,9 @@ TEXT;
             'generationConfig' => [
                 'temperature' => 0.7,
                 'maxOutputTokens' => 1024,
+                'thinkingConfig' => [
+                    'thinkingBudget' => 0
+                ]
             ]
         ];
 
@@ -78,7 +81,7 @@ TEXT;
             CURLOPT_POST => true,
             CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
             CURLOPT_POSTFIELDS => json_encode($payload),
-            CURLOPT_TIMEOUT => 15,
+            CURLOPT_TIMEOUT => 25,
             CURLOPT_SSL_VERIFYPEER => true,
         ]);
 
@@ -122,21 +125,21 @@ TEXT;
                      "3. ISO 400 u 800 si estás en un restaurante con luz tenue.\n" .
                      "4. Switch del lente en **VR ON**.\n" .
                      "5. Tocá la pantalla abatible justo en el bocado que querés destacar.";
-        } elseif (str_contains($promptLower, 'paisaje') || str_contains($promptLower, 'montaña') || str_contains($promptLower, 'calle')) {
-            $reply = "Para paisajes con tu Nikon D5500, la regla sagrada es **f/8**.\n\n" .
-                     "Tanto el 18-55mm como el 18-200mm tienen su punto dulce (sweet spot) de máxima nitidez entre f/5.6 y f/8. Ni se te ocurra cerrar a f/16 o f/22 creyendo que vas a ver más nítido, porque el sensor de 24MP sufre difracción y se apagan los detalles finos.\n\n" .
-                     "**Configuración en 3 pasos:**\n" .
-                     "1. Rueda a **A** -> Dial trasero a **f/8**.\n" .
-                     "2. Botón táctil **[i]** -> ISO en **100**.\n" .
-                     "3. Enfocá a un tercio de la distancia entre tus pies y el horizonte.";
-        } elseif (str_contains($promptLower, 'fondo') || str_contains($promptLower, 'bokeh') || str_contains($promptLower, 'retrato')) {
-            $reply = "¡El truco maestro para retratos con tu equipo, Martín!\n\n" .
-                     "Como ninguno de tus zooms es un f/1.8 fijo, el secreto con el **18-200mm** es la **compresión óptica de teleobjetivo**:\n\n" .
-                     "1. Montá el 18-200mm y parate a unos 5 o 6 metros de la persona.\n" .
+        } elseif (str_contains($promptLower, 'hija') || str_contains($promptLower, 'hijo') || str_contains($promptLower, 'niño') || str_contains($promptLower, 'chico') || str_contains($promptLower, 'bebe') || str_contains($promptLower, 'persona') || str_contains($promptLower, 'retrato') || str_contains($promptLower, 'bokeh') || str_contains($promptLower, 'fondo')) {
+            $reply = "¡Impecable Martín! Para sacarle fotones a tu hija con tu equipo tenés dos caminos de oro:\n\n" .
+                     "**Opción 1: Si está jugando o moviéndose rápido (Modo S):**\n" .
+                     "1. Girá la rueda de modos a la letra **S** (Prioridad Velocidad).\n" .
+                     "2. Con la rueda trasera poné **1/500s** (o 1/1000s si corre) para que no te salga movida ni una pestaña.\n" .
+                     "3. Botón táctil **[i]** -> Modo de Enfoque en **AF-C** (continuo) para que la cámara la persiga si se mueve.\n" .
+                     "4. Subí el ISO a **400 u 800** si estás en sombra o interiores.\n\n" .
+                     "**Opción 2: Retrato posado con fondo borroso cremoso (El truco del 18-200mm):**\n" .
+                     "1. Montá el **18-200mm** y parate a unos **4 o 5 metros** de ella.\n" .
                      "2. Clavá el zoom entre **105mm y 135mm**.\n" .
                      "3. Modo **A** con la apertura al máximo que te deje (será f/5 o f/5.3).\n" .
-                     "4. Asegurate de que el fondo esté lejos (mínimo 3 metros de distancia de la persona).\n" .
-                     "El resultado te va a sorprender: el fondo se disuelve como manteca gracias al zoom tele.";
+                     "4. Asegurate de que haya distancia libre detrás de ella (mínimo 3 metros).\n" .
+                     "La compresión tele te va a dejar un desenfoque de fondo cinematográfico y los rasgos de la cara súper naturales.\n\n" .
+                     "**Tip clave:** Ponete a la altura de sus ojos (agachate o desplegá la pantalla abatible de la D5500 hacia arriba para no tirarte al piso).";
+        } elseif (str_contains($promptLower, 'paisaje') || str_contains($promptLower, 'montaña') || str_contains($promptLower, 'calle')) {
         } else {
             $reply = "¡Acá estoy Martín! Con tu **Nikon D5500** y tus dos lentes (**18-55mm VR II** y **18-200mm VR I**) tenés un combo para romperla en cualquier situación.\n\n" .
                      "Preguntame lo que quieras sobre qué lente llevarte en la mochila, cómo configurar la cámara para una toma difícil, o qué botones tocar en la pantalla táctil.\n\n" .

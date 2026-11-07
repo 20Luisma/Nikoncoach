@@ -64,6 +64,7 @@ APP_ENV=production
 APP_NAME=NikonCoach
 APP_URL=https://contenido.creawebes.com/NikonCoach
 GEMINI_API_KEY=${GEMINI_API_KEY:-}
+GEMINI_MODEL=gemini-3.8-flash
 EOF
 
 sshpass -p "$VPS_PASS" ssh -o StrictHostKeyChecking=no -p "$VPS_PORT" "$VPS_USER@$VPS_HOST" "chmod 600 '$VPS_REMOTE_PATH/.env'"
