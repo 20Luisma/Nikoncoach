@@ -26,6 +26,7 @@ use NikonCoach\Application\UseCases\RecommendLensUseCase;
 use NikonCoach\Infrastructure\AI\GeminiClient;
 use NikonCoach\Infrastructure\Config;
 use NikonCoach\Infrastructure\Repositories\EquipmentRepository;
+use NikonCoach\Infrastructure\Repositories\MissionRepository;
 use NikonCoach\Presentation\Controllers\ApiController;
 use NikonCoach\Presentation\Controllers\HomeController;
 
@@ -34,12 +35,13 @@ Config::load(__DIR__ . '/..');
 
 // Inyección de dependencias
 $equipmentRepo = new EquipmentRepository();
+$missionRepo = new MissionRepository();
 $recommendLensUseCase = new RecommendLensUseCase($equipmentRepo);
 $calculateExposureUseCase = new CalculateExposureUseCase($equipmentRepo);
 $geminiClient = new GeminiClient();
 $askMentorUseCase = new AskMentorUseCase($geminiClient);
 
-$homeController = new HomeController($equipmentRepo);
+$homeController = new HomeController($equipmentRepo, $missionRepo);
 $apiController = new ApiController(
     $recommendLensUseCase,
     $calculateExposureUseCase,

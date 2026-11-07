@@ -1,13 +1,14 @@
 /**
  * NikonCoach — Frontend Application Script
  * JS Vanilla desacoplado sin librerías externas.
+ * 100% Responsive y optimizado para pantallas móviles y táctiles.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
     const basePath = document.body.dataset.basePath || '';
 
     // =========================================================================
-    // 1. Navegación por pestañas
+    // 1. Navegación por pestañas ancla
     // =========================================================================
     const tabLinks = document.querySelectorAll('.tab-link');
     tabLinks.forEach(tab => {
@@ -29,12 +30,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateDistanceUI(val) {
         const cm = parseInt(val, 10);
         const meters = (cm / 100).toFixed(cm >= 100 ? 1 : 2);
-        distanceDisplay.textContent = `${cm} cm (${meters} m)`;
+        if (distanceDisplay) {
+            distanceDisplay.textContent = `${cm} cm (${meters} m)`;
+        }
 
-        if (cm < 50) {
-            distanceWarning.classList.remove('hidden');
-        } else {
-            distanceWarning.classList.add('hidden');
+        if (distanceWarning) {
+            if (cm < 50) {
+                distanceWarning.classList.remove('hidden');
+            } else {
+                distanceWarning.classList.add('hidden');
+            }
         }
     }
 
@@ -83,10 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderBackpackVerdict(data) {
-        if (!data.success) return;
+        if (!data || !data.success) return;
 
-        const is1855 = data.recommended_lens_id === '18-55mm';
-        const badgeColor = is1855 ? 'badge-green' : 'badge-red';
         const weightSaved = data.weight_saved_grams > 0 
             ? `<div class="tip-banner">💡 <strong>¡Ahorro de peso!</strong> Al llevar el 18-55mm te ahorrás <strong>365 gramos</strong> colgados al cuello.</div>`
             : '';
@@ -128,13 +131,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const lensId = calcLens.value;
         if (lensId === '18-55mm') {
             focalSlider.max = 55;
-            focalMaxLabel.textContent = '55mm (Tele corto)';
+            if (focalMaxLabel) focalMaxLabel.textContent = '55mm (Tele corto)';
             if (parseInt(focalSlider.value, 10) > 55) {
                 focalSlider.value = 55;
             }
         } else {
             focalSlider.max = 200;
-            focalMaxLabel.textContent = '200mm (Super tele)';
+            if (focalMaxLabel) focalMaxLabel.textContent = '200mm (Super tele)';
         }
         updateFocalDisplay();
     }
@@ -257,7 +260,182 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =========================================================================
-    // 4. Mentor IA Chat (Gemini)
+    // 4. Simulador Visual de Focal y Encuadre DX
+    // =========================================================================
+    const simRange = document.getElementById('sim-focal-range');
+    const simDisplay = document.getElementById('sim-focal-display');
+    const hudFocalReal = document.getElementById('hud-focal-real');
+    const hudFocalEq = document.getElementById('hud-focal-eq');
+    const hudAngle = document.getElementById('hud-angle');
+    const hudLensFit = document.getElementById('hud-lens-fit');
+    const hudBokehLevel = document.getElementById('hud-bokeh-level');
+    const vfFocal = document.getElementById('vf-focal-indicator');
+    const vfCrop = document.getElementById('vf-crop-indicator');
+    const simSubject = document.getElementById('sim-subject');
+    const simBg = document.getElementById('sim-scene-bg');
+    const presetBtns = document.querySelectorAll('.btn-preset');
+
+    function updateSimulatorUI(focalMm) {
+        const mm = parseInt(focalMm, 10);
+        const eq35 = (mm * 1.5).toFixed(1);
+
+        if (simDisplay) simDisplay.textContent = `${mm} mm`;
+        if (hudFocalReal) hudFocalReal.textContent = `${mm} mm`;
+        if (hudFocalEq) hudFocalEq.textContent = `${eq35} mm eq.`;
+        if (vfFocal) vfFocal.textContent = `${mm}mm`;
+        if (vfCrop) vfCrop.textContent = `${eq35}mm eq.`;
+
+        // Cálculo de ángulo de visión DX aproximado
+        // 2 * atan(15.6 / (2 * f)) en grados
+        const angle = Math.round(2 * Math.atan(15.6 / (2 * mm)) * (180 / Math.PI));
+        if (hudAngle) hudAngle.textContent = `${angle}°`;
+
+        // Lente apto
+        if (hudLensFit) {
+            if (mm <= 55) {
+                hudLensFit.textContent = '18-55mm y 18-200mm';
+                hudLensFit.className = 'hud-val text-green';
+            } else {
+                hudLensFit.textContent = 'Exclusivo 18-200mm VR I';
+                hudLensFit.className = 'hud-val text-gold';
+            }
+        }
+
+        // Compresión de fondo y bokeh
+        if (hudBokehLevel) {
+            if (mm < 35) {
+                hudBokehLevel.textContent = 'Gran angular • Fondo lejano y muy nítido';
+            } else if (mm <= 70) {
+                hudBokehLevel.textContent = 'Perspectiva natural • Fondo equilibrado';
+            } else if (mm <= 135) {
+                hudBokehLevel.textContent = 'Compresión tele pro • Fondo suave y desenfocado';
+            } else {
+                hudBokehLevel.textContent = 'Supertele • Fondo aplastado en bokeh cremoso';
+            }
+        }
+
+        // Animación de escala en el visor (de 1x a 4.5x)
+        const scale = 0.8 + ((mm - 18) / (200 - 18)) * 3.4;
+        if (simSubject) {
+            simSubject.style.transform = `scale(${scale.toFixed(2)})`;
+        }
+
+        // Desenfoque del fondo en base a la focal
+        const blurPx = ((mm - 18) / (200 - 18)) * 14;
+        if (simBg) {
+            simBg.style.filter = `blur(${blurPx.toFixed(1)}px)`;
+            simBg.style.transform = `scale(${(1 + (scale - 1) * 0.4).toFixed(2)})`;
+        }
+
+        // Actualizar botón preset activo
+        presetBtns.forEach(btn => {
+            if (parseInt(btn.dataset.focal, 10) === mm) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    if (simRange) {
+        simRange.addEventListener('input', (e) => {
+            updateSimulatorUI(e.target.value);
+        });
+    }
+
+    presetBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const focal = btn.dataset.focal;
+            if (simRange && focal) {
+                simRange.value = focal;
+                updateSimulatorUI(focal);
+            }
+        });
+    });
+
+    // =========================================================================
+    // 5. Misiones de Campo (LocalStorage Tracker)
+    // =========================================================================
+    const STORAGE_KEY = 'nikoncoach_completed_missions';
+    let completedMissions = [];
+
+    try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            completedMissions = JSON.parse(stored);
+        }
+    } catch (e) {
+        completedMissions = [];
+    }
+
+    function updateMissionsUI() {
+        const missionCards = document.querySelectorAll('.mission-card');
+        const total = missionCards.length;
+        if (total === 0) return;
+
+        let completedCount = 0;
+
+        missionCards.forEach(card => {
+            const id = card.dataset.missionId;
+            const btn = card.querySelector('.btn-toggle-mission');
+            const icon = btn ? btn.querySelector('.check-box-icon') : null;
+            const text = btn ? btn.querySelector('.btn-mission-text') : null;
+
+            if (completedMissions.includes(id)) {
+                card.classList.add('completed');
+                completedCount++;
+                if (icon) icon.textContent = '✅';
+                if (text) text.textContent = 'Misión Completada';
+            } else {
+                card.classList.remove('completed');
+                if (icon) icon.textContent = '⬜';
+                if (text) text.textContent = 'Marcar como Completada';
+            }
+        });
+
+        // Actualizar barra de progreso
+        const percent = Math.round((completedCount / total) * 100);
+        const progressBar = document.getElementById('missions-progress-bar');
+        const trackerSummary = document.getElementById('tracker-summary');
+        const statusBadge = document.getElementById('tracker-status-badge');
+
+        if (progressBar) progressBar.style.width = `${percent}%`;
+        if (trackerSummary) trackerSummary.textContent = `${completedCount} de ${total} misiones completadas (${percent}%)`;
+
+        if (statusBadge) {
+            if (completedCount === 0) {
+                statusBadge.textContent = '📸 Aspirante a Pro';
+            } else if (completedCount <= 2) {
+                statusBadge.textContent = '⚡ Tirador DX Activo';
+            } else if (completedCount <= 4) {
+                statusBadge.textContent = '🔥 Experto en D5500';
+            } else {
+                statusBadge.textContent = '🏆 Maestro NikonCoach';
+            }
+        }
+    }
+
+    document.querySelectorAll('.btn-toggle-mission').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.dataset.missionId;
+            if (!id) return;
+
+            if (completedMissions.includes(id)) {
+                completedMissions = completedMissions.filter(m => m !== id);
+            } else {
+                completedMissions.push(id);
+            }
+
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(completedMissions));
+            } catch (e) {}
+
+            updateMissionsUI();
+        });
+    });
+
+    // =========================================================================
+    // 6. Mentor IA Chat (Gemini 3.8 Flash)
     // =========================================================================
     const chatForm = document.getElementById('chat-form');
     const chatInput = document.getElementById('chat-input');
@@ -280,11 +458,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const question = chatInput.value.trim();
             if (!question) return;
 
-            // Agregar mensaje de Martín
             appendChatMessage('user', question);
             chatInput.value = '';
 
-            // Mostrar typing indicator
             const typingId = appendTypingIndicator();
 
             try {
@@ -310,7 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (err) {
                 removeTypingIndicator(typingId);
-                appendChatMessage('coach', 'Error al conectar con el servidor de IA.');
+                appendChatMessage('coach', 'Error al conectar con el servidor del coach.');
             }
         });
     }
@@ -339,7 +515,7 @@ document.addEventListener('DOMContentLoaded', () => {
         msgDiv.innerHTML = `
             <div class="msg-avatar">📸</div>
             <div class="msg-body">
-                <em>El coach está pensando la jugada... ⏳</em>
+                <em>El coach está preparando la receta... ⏳</em>
             </div>
         `;
         chatMessages.appendChild(msgDiv);
@@ -353,17 +529,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function formatChatMessageText(raw) {
-        // Convierte saltos de línea y negritas sencillas
         let text = escapeHtml(raw);
         text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
         
-        // Convertir listas con viñetas
         const paragraphs = text.split('\n\n').map(p => {
             const lines = p.split('\n');
-            const isBulletList = lines.every(l => l.trim().startsWith('- ') || l.trim().startsWith('• '));
+            const isBulletList = lines.every(l => l.trim().startsWith('- ') || l.trim().startsWith('• ') || l.trim().startsWith('* '));
             if (isBulletList && lines.length > 0) {
-                const items = lines.map(l => `<li>${l.replace(/^[-•]\s*/, '')}</li>`).join('');
+                const items = lines.map(l => `<li>${l.replace(/^[-•*]\s*/, '')}</li>`).join('');
                 return `<ul>${items}</ul>`;
             }
             return `<p>${lines.join('<br>')}</p>`;
@@ -382,8 +556,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return div.innerHTML;
     }
 
-    // Inicializaciones al cargar
+    // Inicializaciones
     if (distanceSlider) updateDistanceUI(distanceSlider.value);
     syncFocalBounds();
+    if (simRange) updateSimulatorUI(simRange.value);
+    updateMissionsUI();
 });
-

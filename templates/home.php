@@ -5,6 +5,7 @@ declare(strict_types=1);
 /**
  * @var NikonCoach\Domain\Entities\CameraProfile $camera
  * @var array<string, NikonCoach\Domain\Entities\Lens> $lenses
+ * @var array<NikonCoach\Domain\Entities\Mission> $missions
  * @var string $pageTitle
  */
 ob_start();
@@ -30,8 +31,10 @@ ob_start();
     <!-- Navegación por pestañas ancla -->
     <nav class="nav-tabs" aria-label="Secciones">
         <a href="#equipo" class="tab-link active">🎒 Tu Hardware</a>
-        <a href="#mochila" class="tab-link">🧭 Asesor de Mochila</a>
+        <a href="#mochila" class="tab-link">🧭 Asesor Mochila</a>
         <a href="#calculadora" class="tab-link">⚙️ Receta Botón a Botón</a>
+        <a href="#simulador" class="tab-link">🔭 Simulador DX</a>
+        <a href="#misiones" class="tab-link">🎯 Misiones</a>
         <a href="#mentor" class="tab-link">🧠 Mentor IA</a>
     </nav>
 
@@ -275,10 +278,172 @@ ob_start();
         </div>
     </section>
 
-    <!-- Sección 4: Mentor IA con Gemini 3.8 Flash -->
+    <!-- Sección 4: Simulador Visual de Focal y Encuadre DX -->
+    <section id="simulador" class="section-block">
+        <div class="section-header">
+            <span class="section-tag">SIMULADOR VISUAL DE ENCUADRE</span>
+            <h2>El Efecto de la Focal y la Compresión en tu Sensor DX</h2>
+            <p>Descubrí en tiempo real cómo cambia el ángulo de visión de 18mm a 200mm y cómo el teleobjetivo disuelve el fondo.</p>
+        </div>
+
+        <div class="simulator-layout panel-box">
+            <div class="sim-controls">
+                <div class="sim-presets">
+                    <span class="sim-lbl">Focales Clave en tu Equipo:</span>
+                    <div class="preset-buttons">
+                        <button type="button" class="btn-preset active" data-focal="18">18mm (Gran Angular)</button>
+                        <button type="button" class="btn-preset" data-focal="35">35mm (Ojo humano)</button>
+                        <button type="button" class="btn-preset" data-focal="55">55mm (Límite 18-55)</button>
+                        <button type="button" class="btn-preset" data-focal="105">105mm (Retrato Pro)</button>
+                        <button type="button" class="btn-preset" data-focal="135">135mm (Compresión Bokeh)</button>
+                        <button type="button" class="btn-preset" data-focal="200">200mm (Supertele 300mm eq.)</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-with-val">
+                        <label for="sim-focal-range" class="form-label">Ajuste fino de focal:</label>
+                        <span id="sim-focal-display" class="slider-val">18 mm</span>
+                    </div>
+                    <input type="range" id="sim-focal-range" class="form-range" min="18" max="200" step="1" value="18">
+                </div>
+
+                <!-- HUD de Información en Tiempo Real -->
+                <div class="sim-hud-grid">
+                    <div class="hud-card">
+                        <span class="hud-label">Focal Real D5500</span>
+                        <span id="hud-focal-real" class="hud-val text-gold">18 mm</span>
+                    </div>
+                    <div class="hud-card">
+                        <span class="hud-label">Eq. Full Frame (1.5x)</span>
+                        <span id="hud-focal-eq" class="hud-val">27.0 mm</span>
+                    </div>
+                    <div class="hud-card">
+                        <span class="hud-label">Ángulo de Visión</span>
+                        <span id="hud-angle" class="hud-val">76°</span>
+                    </div>
+                    <div class="hud-card">
+                        <span class="hud-label">Lente Apto</span>
+                        <span id="hud-lens-fit" class="hud-val text-green">18-55mm y 18-200mm</span>
+                    </div>
+                    <div class="hud-card span-2">
+                        <span class="hud-label">Compresión y Desenfoque de Fondo (Bokeh)</span>
+                        <span id="hud-bokeh-level" class="hud-val">Amplio campo • Fondo nítido</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Viewfinder Óptico Interactivo -->
+            <div class="viewfinder-frame">
+                <div class="viewfinder-overlay">
+                    <div class="viewfinder-crosshair"></div>
+                    <div class="viewfinder-hud-top">
+                        <span>DX SENSOR 1.5x</span>
+                        <span id="vf-focal-indicator">18mm</span>
+                    </div>
+                    <div class="viewfinder-hud-bottom">
+                        <span>AF-S [ • ]</span>
+                        <span id="vf-crop-indicator">27mm eq.</span>
+                    </div>
+                </div>
+
+                <div id="sim-scene-wrapper" class="sim-scene">
+                    <div id="sim-scene-bg" class="sim-bg"></div>
+                    <div id="sim-subject" class="sim-subject">
+                        <div class="subject-icon">🚶‍♂️</div>
+                        <span class="subject-label">Sujeto a 5 metros</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección 5: Misiones de Campo ("Aprender Haciendo") -->
+    <section id="misiones" class="section-block">
+        <div class="section-header">
+            <span class="section-tag">APRENDER HACIENDO</span>
+            <h2>Misiones de Campo con tu Equipo</h2>
+            <p>Retos fotográficos prácticos diseñados a la medida de tu Nikon D5500. Marcalas a medida que salgas a la calle a disparar.</p>
+        </div>
+
+        <div class="missions-tracker panel-box">
+            <div class="tracker-header">
+                <div>
+                    <h3>Tu Progreso Fotográfico</h3>
+                    <p id="tracker-summary">0 de <?= count($missions) ?> misiones completadas</p>
+                </div>
+                <div class="tracker-badge" id="tracker-status-badge">📸 Aspirante a Pro</div>
+            </div>
+            <div class="progress-bar-container">
+                <div id="missions-progress-bar" class="progress-bar-fill"></div>
+            </div>
+        </div>
+
+        <div class="missions-grid">
+            <?php foreach ($missions as $m): ?>
+                <article class="mission-card" data-mission-id="<?= htmlspecialchars($m->id) ?>">
+                    <div class="mission-header">
+                        <div class="mission-top">
+                            <span class="mission-icon"><?= $m->badgeIcon ?></span>
+                            <span class="mission-diff"><?= htmlspecialchars($m->difficulty) ?></span>
+                        </div>
+                        <h3><?= htmlspecialchars($m->title) ?></h3>
+                        <p class="mission-desc"><?= htmlspecialchars($m->description) ?></p>
+                    </div>
+
+                    <div class="mission-gear-strip">
+                        <span class="gear-tag">🎒 <?= htmlspecialchars($m->targetLensName) ?></span>
+                        <span class="focal-tag">🔭 <?= htmlspecialchars($m->recommendedFocal) ?></span>
+                    </div>
+
+                    <div class="mission-badges-grid">
+                        <div class="m-badge">
+                            <span class="mb-lbl">Modo</span>
+                            <span class="mb-val"><?= htmlspecialchars($m->cameraMode) ?></span>
+                        </div>
+                        <div class="m-badge">
+                            <span class="mb-lbl">Apertura</span>
+                            <span class="mb-val"><?= htmlspecialchars($m->targetAperture) ?></span>
+                        </div>
+                        <div class="m-badge">
+                            <span class="mb-lbl">Velocidad</span>
+                            <span class="mb-val"><?= htmlspecialchars($m->targetShutter) ?></span>
+                        </div>
+                        <div class="m-badge">
+                            <span class="mb-lbl">ISO</span>
+                            <span class="mb-val"><?= $m->targetIso ?></span>
+                        </div>
+                    </div>
+
+                    <div class="mission-steps">
+                        <strong>Pasos en la D5500:</strong>
+                        <ul>
+                            <?php foreach ($m->d5500Steps as $step): ?>
+                                <li><?= htmlspecialchars($step) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+
+                    <div class="mission-challenge-box">
+                        <strong>🎯 Reto de campo:</strong>
+                        <p><?= htmlspecialchars($m->fieldChallenge) ?></p>
+                    </div>
+
+                    <div class="mission-footer">
+                        <button type="button" class="btn btn-toggle-mission" data-mission-id="<?= htmlspecialchars($m->id) ?>">
+                            <span class="check-box-icon">⬜</span>
+                            <span class="btn-mission-text">Marcar como Completada</span>
+                        </button>
+                    </div>
+                </article>
+            <?php endforeach; ?>
+        </div>
+    </section>
+
+    <!-- Sección 6: Mentor IA con Gemini 3.8 Flash -->
     <section id="mentor" class="section-block">
         <div class="section-header">
-            <span class="section-tag">MENTOR IA PERSONAL</span>
+            <span class="section-tag">MENTOR IA PERSONAL (GEMINI 3.8 FLASH)</span>
             <h2>Preguntale al Coach de tu Nikon D5500</h2>
             <p>Hablale en confianza en criollo. Conoce tu cámara, tus dos lentes y la física fotográfica de memoria.</p>
         </div>
@@ -290,7 +455,7 @@ ob_start();
                     <button type="button" class="chip" data-prompt="¿Cómo saco las mejores fotos de platos de comida con mi equipo?">🍽️ Fotos de comida</button>
                     <button type="button" class="chip" data-prompt="¿Cómo consigo fondo desenfocado (bokeh) con mis lentes sin comprar otro?">✨ Fondo desenfocado</button>
                     <button type="button" class="chip" data-prompt="¿Por qué me decís que no cierre el diafragma a f/22 en paisajes?">🏔️ ¿Por qué f/8 y no f/22?</button>
-                    <button type="button" class="chip" data-prompt="Dame una misión fotográfica para salir a practicar hoy a la calle.">🎯 Misión práctica de hoy</button>
+                    <button type="button" class="chip" data-prompt="¿Cómo configuro la cámara para sacarle fotos nítidas a mi hija jugando?">👧 Fotos a mi hija</button>
                     <button type="button" class="chip" data-prompt="¿Cuándo tengo que apagar el switch de VR del lente?">📴 ¿Cuándo apagar el VR?</button>
                 </div>
             </div>
@@ -300,7 +465,7 @@ ob_start();
                     <div class="chat-msg coach-msg">
                         <div class="msg-avatar">📸</div>
                         <div class="msg-body">
-                            <p><strong>¡Buenas Martín!</strong> Acá tenés a tu coach de bolsillo.</p>
+                            <p><strong>¡Buenas Martín!</strong> Acá tenés a tu coach de bolsillo conectado en vivo con Gemini 3.8 Flash.</p>
                             <p>Decime qué querés fotografiar hoy o qué duda tenés con la D5500, el 18-55mm o el 18-200mm y te tiro la posta botón a botón.</p>
                         </div>
                     </div>
@@ -326,7 +491,7 @@ ob_start();
             </div>
             <div class="footer-meta">
                 <span>Hardware: Nikon D5500 + 18-55mm VR II + 18-200mm VR I</span>
-                <span>PHP 8.4 Clean Architecture • Google Gemini IA</span>
+                <span>PHP 8.4 Clean Architecture • Google Gemini 3.8 Flash</span>
             </div>
         </div>
     </footer>
@@ -334,4 +499,3 @@ ob_start();
 <?php
 $content = ob_get_clean();
 require __DIR__ . '/layout.php';
-

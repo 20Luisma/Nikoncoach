@@ -18,3 +18,4 @@ final readonly class GetMissionsUseCase
         return array_map(fn($m) => $m->toArray(), $missions);
     }
 }
+

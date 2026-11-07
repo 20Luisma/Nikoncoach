@@ -15,3 +15,4 @@ interface MissionRepositoryInterface
 
     public function getMissionById(string $id): ?Mission;
 }
+
