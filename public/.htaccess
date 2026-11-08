@@ -12,3 +12,10 @@
     Header set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
 
+# Forzar recarga inmediata de manifest y service worker sin cache estática de CDN
+<FilesMatch "(manifest\.json|sw\.js)$">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+    </IfModule>
+</FilesMatch>
+

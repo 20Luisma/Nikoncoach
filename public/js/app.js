@@ -918,6 +918,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    window.addEventListener('appinstalled', () => {
+        if (installAppBtn) {
+            installAppBtn.classList.add('hidden');
+        }
+        console.log('[NikonCoach PWA] ¡App instalada con éxito!');
+    });
+
     // Inicializaciones
     if (distanceSlider) updateDistanceUI(distanceSlider.value);
     syncFocalBounds();

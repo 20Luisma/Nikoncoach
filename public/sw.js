@@ -1,12 +1,6 @@
-const CACHE_NAME = 'nikoncoach-v4';
+const CACHE_NAME = 'nikoncoach-v5';
 const STATIC_ASSETS = [
   './',
-  'mochila',
-  'receta',
-  'simulador',
-  'misiones',
-  'mentor',
-  'equipo',
   'css/style.css',
   'js/app.js',
   'manifest.json',
@@ -39,7 +33,7 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Las llamadas a la API de IA o cálculo dinámico van directo a la red
+  // Las llamadas a la API de IA o cálculo dinámico van directo a la red (no se cachean)
   if (url.pathname.includes('/api/')) {
     event.respondWith(
       fetch(event.request).catch(() => {
@@ -55,15 +49,21 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Ignorar peticiones que no sean GET
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
   // App shell y estáticos
   event.respondWith(
     fetch(event.request)
       .then((res) => {
-        const copy = res.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        if (res.status === 200) {
+          const copy = res.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        }
         return res;
       })
       .catch(() => caches.match(event.request))
   );
 });
-
