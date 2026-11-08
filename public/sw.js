@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nikoncoach-v5';
+const CACHE_NAME = 'nikoncoach-v6';
 const STATIC_ASSETS = [
   './',
   'css/style.css',
