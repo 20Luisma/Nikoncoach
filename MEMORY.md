@@ -55,22 +55,33 @@
 - [x] Lógica interactiva en cliente: `public/js/app.js` (alerta de 50cm, simulador de focal 18-200mm con visor óptico animado, tracker de misiones con `localStorage`, chat interactivo)
 - [x] Validación y tests del dominio: 8/8 tests aprobados
 - [x] Escáner de Escena con Foto del Móvil (IA Vision Multimodal con Gemini 3.8 Flash): subís una foto del lugar tomada con tu celular, la IA analiza la iluminación/distancia y te da la receta botón a botón para la D5500 + 3 ideas de encuadre
-- [x] Soporte PWA completo (`manifest.json`, `sw.js`, `assets/icon-192.png`, `assets/icon-512.png`, `assets/icon.svg` y botón "📲 Instalar App") para instalar en Chrome/Android/iOS como app nativa
+- [x] Soporte PWA completo (`manifest.json`, `sw.js` v2, `assets/icon-192.png`, `assets/icon-512.png`, `assets/icon.svg` y botón "📲 Instalar App") para instalar en Chrome/Android/iOS como app nativa
+- [x] Rediseño de arquitectura multi-página: cada sección convertida en su propia página dedicada (`/`, `/mochila`, `/receta`, `/simulador`, `/misiones`, `/mentor`, `/equipo`)
+- [x] Navegación moderna dual: pills horizontales en desktop y Mobile Bottom Tab Bar fijada abajo estilo app nativa (iOS / Android) con safe-area
 - [x] Subida a GitHub (`https://github.com/20Luisma/Nikoncoach`)
-- [x] Despliegue a Hostinger (`https://contenido.creawebes.com/NikonCoach/`) con verificación HTTP 200 y endpoints probados en vivo
-- [x] Tag Git creado y sincronizado (`v-estable-2026-11-07`)
+- [x] Despliegue a Hostinger (`https://contenido.creawebes.com/NikonCoach/`) con verificación HTTP 200 en todas las rutas independientes
 
 ---
 
 ## 🚀 Próximos Pasos Prioritarios
 
-1. Soporte Offline PWA (Service Worker) para consultar recetas y asesor de mochila en el campo sin cobertura móvil.
-2. Diagrama interactivo SVG de los botones físicos de la Nikon D5500.
-3. Guardar favoritos de recetas de disparo frecuentes.
+1. Diagrama interactivo SVG de los botones físicos de la Nikon D5500.
+2. Guardar favoritos de recetas de disparo frecuentes en `localStorage`.
 
 ---
 
 ## 🕰️ Historial de Sesiones
+
+### 2026-11-08 (Sesión 4 — Rediseño Multi-Página, Mobile Bottom Bar & PWA Completa)
+- **Motivo:** El usuario pidió desacoplar el diseño largo vertical de una sola página en páginas separadas para cada herramienta ("todo muy bien la idea pero el diseño no me gusta nada , yo creo que cada seccion deveria ir en una page aprte no todo en la misma").
+- **Implementación:**
+  1. Creamos directorio `templates/pages/` con 7 vistas modulares: `scanner.php`, `backpack.php`, `recipe.php`, `simulator.php`, `missions.php`, `mentor.php`, `gear.php`.
+  2. Implementamos `templates/layout.php` con barra superior de marca, tabs para desktop y Mobile Bottom Tab Bar fijada al fondo de la pantalla.
+  3. `HomeController.php` ampliado con métodos independientes que hacen buffer del template respectivo.
+  4. Enrutamiento en `public/index.php` con soporte automático para subcarpeta `/NikonCoach/` y raíz `/`.
+  5. Configuración de `sw.js` versión `nikoncoach-v2` para cachear las nuevas rutas offline.
+  6. Despliegue a Hostinger verificado: todas las rutas (`/`, `/mochila`, `/receta`, `/simulador`, `/misiones`, `/mentor`, `/equipo`) devuelven HTTP 200 con su respectivo contenido.
+  7. Cascada completada: Local ➔ GitHub ➔ Hostinger VPS.
 
 ### 2026-11-08 / 2026-11-07 (Sesión 3 — Misiones, Simulador DX, Fix IA Gemini 3.8 Flash y 100% Responsive Móvil)
 - Corrección de la API de IA: migración a `gemini-3.8-flash` con `thinkingBudget: 0`, restableciendo respuestas live instantáneas en producción.
