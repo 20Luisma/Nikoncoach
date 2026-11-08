@@ -9,7 +9,7 @@
 **Misión:** Convertir a Martín en un fotógrafo experto con su propio equipo a través de la práctica real, resolviendo dudas de campo ("¿cuál lente llevo?", "¿cómo configuro para esta foto?") y dándole recetas botón a botón en lenguaje rioplatense claro.
 
 **Propietario:** Martín (Esparreguera, Barcelona)  
-**Hostinger:** `contenido.creawebes.com/NikonCoach/`  
+**Hostinger:** `https://contenido.creawebes.com/NikonCoach/`  
 **GitHub:** `https://github.com/20Luisma/Nikoncoach`
 
 ---
@@ -17,9 +17,9 @@
 ## 🏗️ Arquitectura Técnica
 
 - **Backend:** PHP 8.4+ estricto — Clean Architecture (Domain / Application / Infrastructure / Presentation)
-- **Frontend:** HTML5 semántico + CSS3 (Design Tokens, Dark Mode Nikon con acento amarillo `#FFE600`) + Vanilla JS modular
-- **IA:** Google Gemini 3.8 Flash / 2.5 Flash con fallback de conocimiento determinista
-- **Servidor:** Hostinger VPS vía `bin/deploy.sh`
+- **Frontend:** HTML5 semántico + CSS3 (Design Tokens, Dark Mode Nikon con acento amarillo `#FFE600`, 100% Responsive Móvil) + Vanilla JS modular
+- **IA:** Google Gemini 3.8 Flash (`thinkingBudget: 0`, respuestas ultra-rápidas) con fallback de conocimiento determinista
+- **Servidor:** Hostinger VPS vía `bin/deploy.sh` blindado con permisos `.env` (`chmod 600`)
 - **Sin dependencias externas ni frameworks pesados**
 
 ---
@@ -42,14 +42,17 @@
 ## 📌 Estado Actual del Proyecto
 
 - [x] Bootstrap completo del proyecto (estructura, AGENTS.md, MEMORY.md, .gitignore)
-- [x] Entidades de dominio modeladas: `CameraProfile.php`, `Lens.php`, `PhotoScene.php`, `ShootingRecommendation.php`
+- [x] Entidades de dominio modeladas: `CameraProfile.php`, `Lens.php`, `PhotoScene.php`, `ShootingRecommendation.php`, `Mission.php`
 - [x] Repositorio de hardware con especificaciones exactas: `EquipmentRepository.php`
+- [x] Repositorio de misiones prácticas: `MissionRepository.php` (5 retos guiados con el equipo real)
 - [x] Caso de uso 1: `RecommendLensUseCase.php` (lógica de peso vs focal vs límite físico de 50cm)
 - [x] Caso de uso 2: `CalculateExposureUseCase.php` (receta de parámetros A/S/M, f/8 sweet spot, velocidad segura DX e instrucciones botón a botón en la D5500)
-- [x] Integración de mentor IA: `GeminiClient.php` y `AskMentorUseCase.php` con fallback inteligente
+- [x] Caso de uso 3: `GetMissionsUseCase.php` (listado y checklist interactivo)
+- [x] Integración de mentor IA: `GeminiClient.php` y `AskMentorUseCase.php` con Gemini 3.8 Flash y fallback inteligente
 - [x] Controladores y Front Controller: `HomeController.php`, `ApiController.php`, `public/index.php`
-- [x] UI Dark Mode Nikon: `templates/home.php`, `templates/layout.php`, `public/css/style.css`
-- [x] Lógica de interacción desacoplada: `public/js/app.js` (alerta de 50cm en vivo, límites de focal dinámicos, chat)
+- [x] UI Dark Mode Nikon & Simulador Visual DX: `templates/home.php`, `templates/layout.php`, `public/css/style.css`
+- [x] Optimización 100% móvil: inputs con font-size 16px (sin auto-zoom iOS), touch targets de 48px, scroll táctil horizontal
+- [x] Lógica interactiva en cliente: `public/js/app.js` (alerta de 50cm, simulador de focal 18-200mm con visor óptico animado, tracker de misiones con `localStorage`, chat interactivo)
 - [x] Validación y tests del dominio: 8/8 tests aprobados
 - [x] Subida a GitHub (`https://github.com/20Luisma/Nikoncoach`)
 - [x] Despliegue a Hostinger (`https://contenido.creawebes.com/NikonCoach/`) con verificación HTTP 200 y endpoints probados en vivo
@@ -59,23 +62,25 @@
 
 ## 🚀 Próximos Pasos Prioritarios
 
-1. Hacer commit atómico del MVP en Git (`feat: core MVP NikonCoach — Clean Architecture, Dominio, Casos de Uso, Mentor IA y UI Dark Mode`).
-2. Vincular y sincronizar con el repositorio remoto de GitHub (`origin`).
-3. Ejecutar despliegue a Hostinger con `bin/deploy.sh` y validar HTTP 200 en vivo.
-4. Generar backup inmutable de memoria en `memory_backups/`.
-5. Recomendar tag de versión estable `v-estable-2026-11-07`.
+1. Soporte Offline PWA (Service Worker) para consultar recetas y asesor de mochila en el campo sin cobertura móvil.
+2. Diagrama interactivo SVG de los botones físicos de la Nikon D5500.
+3. Guardar favoritos de recetas de disparo frecuentes.
 
 ---
 
 ## 🕰️ Historial de Sesiones
 
+### 2026-11-08 / 2026-11-07 (Sesión 3 — Misiones, Simulador DX, Fix IA Gemini 3.8 Flash y 100% Responsive Móvil)
+- Corrección de la API de IA: migración a `gemini-3.8-flash` con `thinkingBudget: 0`, restableciendo respuestas live instantáneas en producción.
+- Incorporación del Simulador Visual de Focal DX: muestra el encuadre óptico y desenfoque del fondo de 18mm a 200mm.
+- Implementación de 5 Misiones de Campo con checklist y guardado de progreso en `localStorage`.
+- Blindaje responsive para teléfonos: cero auto-zoom en iOS Safari, botones de 48px y navegación fluida.
+- Despliegue a Hostinger validado con HTTP 200 y sincronizado en GitHub.
+
 ### 2026-11-07 (Sesión 2 — Construcción del Core y MVP Completo)
 - Modelado del dominio fotográfico estricto en PHP 8.4: cámara Nikon D5500, lentes 18-55mm y 18-200mm.
 - Implementación de la física fotográfica real: factor DX 1.5x, regla inversa focal, limitación física de 50cm de enfoque en el 18-200mm y sweet spot óptico $f/8$.
-- Creación de la UI Dark Mode Nikon con Design Tokens, CSS modular, sliders reactivos y chat con el Mentor IA.
-- Verificación de sintaxis estricta y tests de casos de uso (100% aprobados).
+- Despliegue inicial a Hostinger.
 
 ### 2026-11-06 / 2026-11-07 (Sesión 1 — Bootstrap y Concepción)
-- Concepción del proyecto: Mentor y Asesor Fotográfico Personal para Martín.
-- Análisis visual del equipo real: Nikon D5500 + 18-55mm VR II (195g) + 18-200mm VR I (560g).
-- Bootstrap inicial ejecutado.
+- Concepción del proyecto y bootstrap con AGENTS.md.
