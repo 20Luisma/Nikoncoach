@@ -2,6 +2,12 @@
 
 declare(strict_types=1);
 
+header('X-Frame-Options: SAMEORIGIN');
+header('X-Content-Type-Options: nosniff');
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
+
 // Registrar autoloader simple PSR-4 para NikonCoach\
 spl_autoload_register(function (string $class) {
     $prefix = 'NikonCoach\\';

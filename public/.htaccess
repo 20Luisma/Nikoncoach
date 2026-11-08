@@ -12,17 +12,25 @@
     Header set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
 
-# Forzar recarga inmediata de manifest y service worker sin cache estática de CDN
-<FilesMatch "(manifest\.json|sw\.js)$">
+# Evitar cache en archivos que cambian dinámicamente (PWA, scripts, estilos)
+<FilesMatch "\.(json|js|css|html|php)$">
+    FileETag None
     <IfModule mod_headers.c>
+        Header unset ETag
         Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
     </IfModule>
 </FilesMatch>
 
-# Permitir a Google WebAPK server descargar iconos para empaquetar la app en Android
+# Permitir a Google WebAPK server descargar iconos para empaquetar la app en Android sin cache
 <FilesMatch "\.(png|svg|ico)$">
+    FileETag None
     <IfModule mod_headers.c>
         Header set Access-Control-Allow-Origin "*"
+        Header unset ETag
+        Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
     </IfModule>
 </FilesMatch>
-

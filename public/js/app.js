@@ -886,8 +886,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             const swUrl = `${basePath}/sw.js`;
-            navigator.serviceWorker.register(swUrl).then(() => {
-                console.log('[NikonCoach PWA] Service Worker registrado.');
+            const swScope = `${basePath}/` || './';
+            navigator.serviceWorker.register(swUrl, { scope: swScope }).then(() => {
+                console.log('[NikonCoach PWA] Service Worker registrado con scope:', swScope);
             }).catch((err) => {
                 console.warn('[NikonCoach PWA] Error al registrar Service Worker:', err);
             });

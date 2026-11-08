@@ -1,11 +1,9 @@
-const CACHE_NAME = 'nikoncoach-v7';
+const CACHE_NAME = 'nikoncoach-v10';
 const STATIC_ASSETS = [
   './',
-  'css/style.css',
-  'js/app.js',
   'manifest.json',
-  'assets/icons/icon-192.png',
-  'assets/icons/icon-512.png',
+  'assets/icon-192.png',
+  'assets/icon-512.png',
   'assets/icon.svg',
 ];
 
@@ -64,6 +62,6 @@ self.addEventListener('fetch', (event) => {
         }
         return res;
       })
-      .catch(() => caches.match(event.request))
+      .catch(() => caches.match(event.request, { ignoreSearch: true }))
   );
 });
