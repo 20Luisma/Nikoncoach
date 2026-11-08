@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const scannerResult = document.getElementById('scanner-result');
 
     let currentBase64Image = null;
+    let currentSceneAnalysisText = '';
 
     if (btnTriggerUpload && sceneFileInput) {
         btnTriggerUpload.addEventListener('click', (e) => {
@@ -175,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderScannerAnalysis(analysisText) {
+        currentSceneAnalysisText = analysisText;
         const formatted = formatChatMessageText(analysisText);
         scannerResult.innerHTML = `
             <div class="scanner-analysis-content">
@@ -185,8 +187,130 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="scanner-analysis-body">
                     ${formatted}
                 </div>
+
+                <!-- Módulo interactivo de preguntas y dudas sobre esta escena -->
+                <div class="scanner-qa-module">
+                    <div class="qa-header">
+                        <span class="qa-badge">💬 PREGUNTALE AL COACH SOBRE ESTA FOTO</span>
+                        <h4>¿Te quedó alguna duda de esta recomendación?</h4>
+                        <p>Hablale en confianza. El coach ya tiene en cuenta la foto que subiste y esta receta. Preguntale sobre cualquier botón, ajuste o término que no entiendas.</p>
+                        <div class="qa-quick-chips">
+                            <button type="button" class="qa-chip" data-ask="¿Cómo evito que me pase lo del Zoom Creep con mi 18-200mm?">🔎 ¿Qué es el Zoom Creep?</button>
+                            <button type="button" class="qa-chip" data-ask="¿Dónde toco en la pantalla o qué botón físico toco para poner ISO 100?">🔘 ¿Cómo pongo ISO 100?</button>
+                            <button type="button" class="qa-chip" data-ask="¿Cómo muevo el punto de enfoque con las flechitas para apuntar al ojo?">🎯 ¿Cómo muevo el punto de enfoque?</button>
+                            <button type="button" class="qa-chip" data-ask="Explicame de forma simple la regla de tercios para esta escena.">📐 Regla de tercios acá</button>
+                        </div>
+                    </div>
+
+                    <div id="scanner-qa-thread" class="qa-thread">
+                        <div class="qa-msg qa-coach-msg">
+                            <div class="qa-avatar">📸</div>
+                            <div class="qa-bubble">
+                                <p><strong>¡Martín!</strong> Si algo de la receta no te quedó del todo claro o no encontrás algún botón en tu D5500, preguntame acá abajo y te lo explico paso a paso.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="scanner-qa-form" class="qa-form">
+                        <input type="text" id="scanner-qa-input" class="qa-input" placeholder="Preguntale al coach (ej: ¿Dónde está ese botón en la cámara?)..." autocomplete="off" required>
+                        <button type="submit" class="btn-qa-send" id="btn-scanner-qa-send">
+                            <span>Preguntar ></span>
+                        </button>
+                    </form>
+                </div>
             </div>
         `;
+
+        // Activar listeners para el chat de dudas de la escena
+        setupScannerQaListeners();
+    }
+
+    function setupScannerQaListeners() {
+        const qaForm = document.getElementById('scanner-qa-form');
+        const qaInput = document.getElementById('scanner-qa-input');
+        const qaThread = document.getElementById('scanner-qa-thread');
+        const qaChips = document.querySelectorAll('.qa-chip');
+
+        qaChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                if (qaInput && qaForm) {
+                    qaInput.value = chip.dataset.ask;
+                    qaForm.dispatchEvent(new Event('submit'));
+                }
+            });
+        });
+
+        if (qaForm) {
+            qaForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const question = qaInput.value.trim();
+                if (!question) return;
+
+                // 1. Mensaje del usuario
+                const userMsg = document.createElement('div');
+                userMsg.className = 'qa-msg qa-user-msg';
+                userMsg.innerHTML = `
+                    <div class="qa-avatar">👤</div>
+                    <div class="qa-bubble"><p>${escapeHtml(question)}</p></div>
+                `;
+                qaThread.appendChild(userMsg);
+                qaInput.value = '';
+                qaThread.scrollTop = qaThread.scrollHeight;
+
+                // 2. Indicador de carga
+                const loadingMsg = document.createElement('div');
+                loadingMsg.className = 'qa-msg qa-coach-msg';
+                loadingMsg.id = 'qa-loading-bubble';
+                loadingMsg.innerHTML = `
+                    <div class="qa-avatar">📸</div>
+                    <div class="qa-bubble"><p><em>Pensando la explicación...</em></p></div>
+                `;
+                qaThread.appendChild(loadingMsg);
+                qaThread.scrollTop = qaThread.scrollHeight;
+
+                const submitBtn = document.getElementById('btn-scanner-qa-send');
+                if (submitBtn) submitBtn.disabled = true;
+
+                try {
+                    const res = await fetch(`${basePath}/api/mentor-chat`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            question: question,
+                            context: {
+                                tipo: 'consulta_sobre_escena_analizada',
+                                escena_analizada_previa: currentSceneAnalysisText.substring(0, 1500)
+                            }
+                        })
+                    });
+                    const data = await res.json();
+                    const loadingBubble = document.getElementById('qa-loading-bubble');
+                    if (loadingBubble) loadingBubble.remove();
+
+                    const reply = data.success && data.reply ? data.reply : 'Disculpame che, se me complicó la respuesta. Probá preguntarme de nuevo.';
+                    const coachMsg = document.createElement('div');
+                    coachMsg.className = 'qa-msg qa-coach-msg';
+                    coachMsg.innerHTML = `
+                        <div class="qa-avatar">📸</div>
+                        <div class="qa-bubble">${formatChatMessageText(reply)}</div>
+                    `;
+                    qaThread.appendChild(coachMsg);
+                    qaThread.scrollTop = qaThread.scrollHeight;
+                } catch (err) {
+                    const loadingBubble = document.getElementById('qa-loading-bubble');
+                    if (loadingBubble) loadingBubble.remove();
+                    const errMsg = document.createElement('div');
+                    errMsg.className = 'qa-msg qa-coach-msg';
+                    errMsg.innerHTML = `
+                        <div class="qa-avatar">📸</div>
+                        <div class="qa-bubble"><p>Error de conexión al consultar al coach. Probá de nuevo.</p></div>
+                    `;
+                    qaThread.appendChild(errMsg);
+                } finally {
+                    if (submitBtn) submitBtn.disabled = false;
+                }
+            });
+        }
     }
 
     // =========================================================================
@@ -724,10 +848,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function formatChatMessageText(raw) {
         let text = escapeHtml(raw);
+        text = text.replace(/^###\s*(.*?)$/gm, '<h4 class="analysis-subhead">$1</h4>');
+        text = text.replace(/^##\s*(.*?)$/gm, '<h3 class="analysis-head">$1</h3>');
         text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
         
         const paragraphs = text.split('\n\n').map(p => {
+            const trimmed = p.trim();
+            if (trimmed.startsWith('<h3') || trimmed.startsWith('<h4')) {
+                return trimmed;
+            }
             const lines = p.split('\n');
             const isBulletList = lines.every(l => l.trim().startsWith('- ') || l.trim().startsWith('• ') || l.trim().startsWith('* '));
             if (isBulletList && lines.length > 0) {

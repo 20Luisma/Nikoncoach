@@ -287,6 +287,222 @@ body {
     color: var(--text-secondary);
 }
 
+.analysis-subhead {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--nikon-yellow);
+    margin: 1.25rem 0 0.5rem;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.analysis-head {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 1.5rem 0 0.65rem;
+}
+
+/* ==========================================================================
+   Módulo de Preguntas y Dudas sobre la Escena (Chat contextual interactivo)
+   ========================================================================== */
+
+.scanner-qa-module {
+    margin-top: 2rem;
+    padding-top: 1.75rem;
+    border-top: 1px dashed var(--border-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.qa-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.qa-badge {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--nikon-yellow);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.qa-header h4 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.qa-header p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+}
+
+.qa-quick-chips {
+    display: flex;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+    margin-top: 0.35rem;
+}
+
+.qa-chip {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.qa-chip:hover {
+    border-color: var(--nikon-yellow);
+    color: var(--nikon-yellow);
+    background: var(--nikon-yellow-dim);
+    transform: translateY(-1px);
+}
+
+.qa-thread {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    max-height: 420px;
+    overflow-y: auto;
+    padding: 0.75rem 0.5rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    scrollbar-width: thin;
+}
+
+.qa-msg {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.qa-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+    background: #000;
+    border: 1px solid var(--border-subtle);
+}
+
+.qa-coach-msg .qa-avatar {
+    border-color: var(--nikon-yellow-border);
+}
+
+.qa-user-msg {
+    flex-direction: row-reverse;
+}
+
+.qa-user-msg .qa-avatar {
+    background: var(--nikon-yellow);
+    color: #000;
+    border: none;
+}
+
+.qa-bubble {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 0.8rem 1rem;
+    font-size: 0.88rem;
+    color: var(--text-primary);
+    line-height: 1.55;
+    max-width: 85%;
+    word-break: break-word;
+}
+
+.qa-coach-msg .qa-bubble {
+    border-top-left-radius: 2px;
+}
+
+.qa-user-msg .qa-bubble {
+    background: var(--nikon-yellow-dim);
+    border-color: var(--nikon-yellow-border);
+    border-top-right-radius: 2px;
+}
+
+.qa-bubble strong {
+    color: var(--nikon-yellow);
+}
+
+.qa-bubble p:not(:last-child) {
+    margin-bottom: 0.5rem;
+}
+
+.qa-form {
+    display: flex;
+    gap: 0.55rem;
+    margin-top: 0.35rem;
+}
+
+.qa-input {
+    flex: 1;
+    background: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    outline: none;
+    transition: var(--transition);
+}
+
+.qa-input:focus {
+    border-color: var(--nikon-yellow);
+    box-shadow: 0 0 0 2px rgba(255, 230, 0, 0.15);
+}
+
+.btn-qa-send {
+    background: var(--nikon-yellow);
+    color: #000;
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: 0 1.35rem;
+    font-size: 0.88rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
+}
+
+.btn-qa-send:hover {
+    background: var(--nikon-yellow-hover);
+    transform: translateY(-1px);
+}
+
+.btn-qa-send:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
 /* ==========================================================================
    Header & Brand (Mobile Friendly)
    ========================================================================== */
