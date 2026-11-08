@@ -54,6 +54,7 @@
 - [x] Optimización 100% móvil: inputs con font-size 16px (sin auto-zoom iOS), touch targets de 48px, scroll táctil horizontal
 - [x] Lógica interactiva en cliente: `public/js/app.js` (alerta de 50cm, simulador de focal 18-200mm con visor óptico animado, tracker de misiones con `localStorage`, chat interactivo)
 - [x] Validación y tests del dominio: 8/8 tests aprobados
+- [x] Escáner de Escena con Foto del Móvil (IA Vision Multimodal con Gemini 3.8 Flash): subís una foto del lugar tomada con tu celular, la IA analiza la iluminación/distancia y te da la receta botón a botón para la D5500 + 3 ideas de encuadre
 - [x] Soporte PWA completo (`manifest.json`, `sw.js`, `assets/icon-192.png`, `assets/icon-512.png`, `assets/icon.svg` y botón "📲 Instalar App") para instalar en Chrome/Android/iOS como app nativa
 - [x] Subida a GitHub (`https://github.com/20Luisma/Nikoncoach`)
 - [x] Despliegue a Hostinger (`https://contenido.creawebes.com/NikonCoach/`) con verificación HTTP 200 y endpoints probados en vivo

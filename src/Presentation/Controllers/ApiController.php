@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NikonCoach\Presentation\Controllers;
 
+use NikonCoach\Application\UseCases\AnalyzeScenePhotoUseCase;
 use NikonCoach\Application\UseCases\AskMentorUseCase;
 use NikonCoach\Application\UseCases\CalculateExposureUseCase;
 use NikonCoach\Application\UseCases\RecommendLensUseCase;
@@ -14,7 +15,8 @@ final readonly class ApiController
     public function __construct(
         private RecommendLensUseCase $recommendLensUseCase,
         private CalculateExposureUseCase $calculateExposureUseCase,
-        private AskMentorUseCase $askMentorUseCase
+        private AskMentorUseCase $askMentorUseCase,
+        private AnalyzeScenePhotoUseCase $analyzeScenePhotoUseCase
     ) {}
 
     public function recommendLens(): void
@@ -92,6 +94,20 @@ final readonly class ApiController
         $context = (array) ($input['context'] ?? []);
 
         $result = $this->askMentorUseCase->execute($question, $context);
+
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function analyzeScene(): void
+    {
+        $this->sendJsonHeaders();
+
+        $input = $this->getRequestData();
+        $base64Image = (string) ($input['image'] ?? '');
+        $mimeType = (string) ($input['mime_type'] ?? 'image/jpeg');
+        $userNote = (string) ($input['note'] ?? '');
+
+        $result = $this->analyzeScenePhotoUseCase->execute($base64Image, $mimeType, $userNote);
 
         echo json_encode($result, JSON_UNESCAPED_UNICODE);
     }

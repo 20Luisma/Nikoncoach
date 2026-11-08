@@ -77,6 +77,217 @@ body {
 }
 
 /* ==========================================================================
+   Escáner de Escena con Foto del Móvil (IA Vision)
+   ========================================================================== */
+
+.scanner-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 1.5rem;
+    align-items: stretch;
+}
+
+@media (max-width: 860px) {
+    .scanner-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.scanner-uploader {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.scanner-dropzone {
+    border: 2px dashed var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--bg-input);
+    padding: 1.75rem 1.25rem;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+    transition: var(--transition);
+    overflow: hidden;
+    min-height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scanner-dropzone:hover, .scanner-dropzone.dragover {
+    border-color: var(--nikon-yellow);
+    background: var(--nikon-yellow-dim);
+}
+
+.hidden-input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.dropzone-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.dropzone-icon {
+    font-size: 3rem;
+    filter: drop-shadow(0 4px 10px rgba(255, 230, 0, 0.3));
+}
+
+.dropzone-empty h3 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.dropzone-empty p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    max-width: 320px;
+}
+
+.btn-pick-photo {
+    width: auto;
+    min-height: 42px;
+    padding: 0.6rem 1.25rem;
+    font-size: 0.88rem;
+    margin-top: 0.5rem;
+}
+
+.dropzone-preview-wrap {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.scene-img-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    display: block;
+}
+
+.preview-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 40%, rgba(0,0,0,0.7) 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0.75rem;
+}
+
+.preview-badge {
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid var(--nikon-yellow-border);
+    color: var(--nikon-yellow);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-pill);
+}
+
+.btn-change-photo {
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.3rem 0.65rem;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-change-photo:hover {
+    background: var(--nikon-red);
+    border-color: var(--nikon-red);
+}
+
+.scanner-result-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 320px;
+}
+
+.scanner-placeholder {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 2.5rem 1rem;
+}
+
+.scanner-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    text-align: center;
+    padding: 2.5rem 1rem;
+}
+
+.loading-spinner-camera {
+    font-size: 3.5rem;
+    animation: pulseGlow 1.5s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255, 230, 0, 0.3)); }
+    50% { transform: scale(1.1); filter: drop-shadow(0 0 25px rgba(255, 230, 0, 0.8)); }
+}
+
+.scanner-analysis-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.scanner-analysis-content h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.scanner-analysis-body {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-primary);
+    word-break: break-word;
+}
+
+.scanner-analysis-body strong {
+    color: var(--nikon-yellow);
+}
+
+.scanner-analysis-body ul {
+    margin: 0.5rem 0 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.scanner-analysis-body li {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+}
+
+/* ==========================================================================
    Header & Brand (Mobile Friendly)
    ========================================================================== */
 

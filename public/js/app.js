@@ -19,6 +19,177 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // =========================================================================
+    // 1.5. Escáner de Escena con Foto del Móvil (IA Vision)
+    // =========================================================================
+    const sceneFileInput = document.getElementById('scene-file-input');
+    const btnTriggerUpload = document.getElementById('btn-trigger-upload');
+    const scannerDropzone = document.getElementById('scanner-dropzone');
+    const dropzoneEmpty = document.getElementById('dropzone-empty');
+    const dropzonePreviewWrap = document.getElementById('dropzone-preview-wrap');
+    const sceneImgPreview = document.getElementById('scene-img-preview');
+    const btnChangePhoto = document.getElementById('btn-change-photo');
+    const sceneUserNote = document.getElementById('scene-user-note');
+    const btnAnalyzeScene = document.getElementById('btn-analyze-scene');
+    const scannerResult = document.getElementById('scanner-result');
+
+    let currentBase64Image = null;
+
+    if (btnTriggerUpload && sceneFileInput) {
+        btnTriggerUpload.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sceneFileInput.click();
+        });
+    }
+
+    if (btnChangePhoto && sceneFileInput) {
+        btnChangePhoto.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sceneFileInput.click();
+        });
+    }
+
+    if (scannerDropzone && sceneFileInput) {
+        scannerDropzone.addEventListener('click', (e) => {
+            if (e.target !== btnChangePhoto && !btnChangePhoto?.contains(e.target)) {
+                sceneFileInput.click();
+            }
+        });
+
+        // Drag & drop
+        scannerDropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            scannerDropzone.classList.add('dragover');
+        });
+        scannerDropzone.addEventListener('dragleave', () => {
+            scannerDropzone.classList.remove('dragover');
+        });
+        scannerDropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            scannerDropzone.classList.remove('dragover');
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                processUploadedImage(e.dataTransfer.files[0]);
+            }
+        });
+    }
+
+    if (sceneFileInput) {
+        sceneFileInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                processUploadedImage(e.target.files[0]);
+            }
+        });
+    }
+
+    function processUploadedImage(file) {
+        if (!file.type.startsWith('image/')) {
+            alert('Por favor selecciona una imagen válida (JPG o PNG).');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                // Redimensionar con canvas a max 1200px para subir volando en 4G/5G
+                const maxDim = 1200;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > maxDim || height > maxDim) {
+                    if (width > height) {
+                        height = Math.round((height * maxDim) / width);
+                        width = maxDim;
+                    } else {
+                        width = Math.round((width * maxDim) / height);
+                        height = maxDim;
+                    }
+                }
+
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                currentBase64Image = canvas.toDataURL('image/jpeg', 0.85);
+
+                // Mostrar vista previa
+                if (sceneImgPreview) sceneImgPreview.src = currentBase64Image;
+                if (dropzoneEmpty) dropzoneEmpty.classList.add('hidden');
+                if (dropzonePreviewWrap) dropzonePreviewWrap.classList.remove('hidden');
+                if (btnAnalyzeScene) btnAnalyzeScene.disabled = false;
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    if (btnAnalyzeScene) {
+        btnAnalyzeScene.addEventListener('click', async () => {
+            if (!currentBase64Image) return;
+
+            const note = sceneUserNote ? sceneUserNote.value.trim() : '';
+
+            // Mostrar estado de carga animado
+            scannerResult.innerHTML = `
+                <div class="scanner-loading">
+                    <span class="loading-spinner-camera">📸</span>
+                    <h3>Analizando tu escena con Visión IA...</h3>
+                    <p>El Coach está estudiando la luz, las sombras y la distancia para darte la receta botón a botón de tu Nikon D5500.</p>
+                </div>
+            `;
+            btnAnalyzeScene.disabled = true;
+
+            try {
+                const response = await fetch(`${basePath}/api/analyze-scene`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        image: currentBase64Image,
+                        mime_type: 'image/jpeg',
+                        note: note
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.analysis) {
+                    renderScannerAnalysis(data.analysis);
+                } else {
+                    scannerResult.innerHTML = `
+                        <div class="warning-banner">
+                            <strong>No se pudo analizar la foto:</strong> ${escapeHtml(data.error || 'Error desconocido')}.
+                        </div>
+                    `;
+                }
+            } catch (err) {
+                scannerResult.innerHTML = `
+                    <div class="warning-banner">
+                        <strong>Error:</strong> Error de conexión con el servidor al enviar la imagen.
+                    </div>
+                `;
+            } finally {
+                btnAnalyzeScene.disabled = false;
+            }
+        });
+    }
+
+    function renderScannerAnalysis(analysisText) {
+        const formatted = formatChatMessageText(analysisText);
+        scannerResult.innerHTML = `
+            <div class="scanner-analysis-content">
+                <div class="result-header">
+                    <span class="result-tag">ANÁLISIS DE ESCENA EN VIVO • NIKON D5500</span>
+                    <h3>Receta y Estrategia para este Lugar</h3>
+                </div>
+                <div class="scanner-analysis-body">
+                    ${formatted}
+                </div>
+            </div>
+        `;
+    }
+
+    // =========================================================================
     // 2. Asesor de Mochila (Distancia & Alerta física de 50cm)
     // =========================================================================
     const distanceSlider = document.getElementById('distance-slider');

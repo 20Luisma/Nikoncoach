@@ -20,6 +20,7 @@ spl_autoload_register(function (string $class) {
     }
 });
 
+use NikonCoach\Application\UseCases\AnalyzeScenePhotoUseCase;
 use NikonCoach\Application\UseCases\AskMentorUseCase;
 use NikonCoach\Application\UseCases\CalculateExposureUseCase;
 use NikonCoach\Application\UseCases\RecommendLensUseCase;
@@ -40,12 +41,14 @@ $recommendLensUseCase = new RecommendLensUseCase($equipmentRepo);
 $calculateExposureUseCase = new CalculateExposureUseCase($equipmentRepo);
 $geminiClient = new GeminiClient();
 $askMentorUseCase = new AskMentorUseCase($geminiClient);
+$analyzeScenePhotoUseCase = new AnalyzeScenePhotoUseCase($geminiClient);
 
 $homeController = new HomeController($equipmentRepo, $missionRepo);
 $apiController = new ApiController(
     $recommendLensUseCase,
     $calculateExposureUseCase,
-    $askMentorUseCase
+    $askMentorUseCase,
+    $analyzeScenePhotoUseCase
 );
 
 // Manejo de URL base (soporte local y subcarpeta en Hostinger: /NikonCoach/)
@@ -73,6 +76,10 @@ switch ($path) {
 
     case '/api/mentor-chat':
         $apiController->mentorChat();
+        break;
+
+    case '/api/analyze-scene':
+        $apiController->analyzeScene();
         break;
 
     default:
