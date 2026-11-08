@@ -1,6 +1,12 @@
-const CACHE_NAME = 'nikoncoach-v1';
+const CACHE_NAME = 'nikoncoach-v2';
 const STATIC_ASSETS = [
   './',
+  'mochila',
+  'receta',
+  'simulador',
+  'misiones',
+  'mentor',
+  'equipo',
   'css/style.css',
   'js/app.js',
   'manifest.json',

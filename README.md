@@ -18,18 +18,28 @@
 
 ## 🚀 Funcionalidades Principales
 
-1. **🧭 Asesor de Mochila Inteligente (*"¿Cuál saco hoy?"*):**
+1. **📸 Escáner de Escena IA (Vision Multimodal):**
+   - Sacale una foto con el móvil al lugar o escena antes de disparar con la réflex.
+   - La IA analiza la luz y el tipo de sujeto en vivo y te devuelve la receta exacta para tu **Nikon D5500**, qué lente montar y 3 ideas de encuadre creativo.
+2. **🧭 Asesor de Mochila Inteligente (*"¿Cuál saco hoy?"*):**
    - Evalúa el plan (paisaje, calle, comida, deportes, retrato).
    - Considera la física del enfoque: alerta visual si el sujeto está a menos de 50 cm (anulación física del 18-200mm).
    - Calcula el ahorro de peso (hasta 365 gramos de diferencia al cuello en caminatas largas).
-2. **⚙️ Calculadora de Disparo y Física DX:**
+3. **⚙️ Calculadora de Disparo y Física DX:**
    - Modo de dial recomendado (**A**, **S** o **M**).
    - Punto dulce óptico ($f/8$ para máxima nitidez en paisaje; apertura abierta a 105-135mm para bokeh con compresión tele).
    - Regla de la inversa de la focal DX con amortiguación de pasos por estabilizador VR.
    - **Instrucciones botón a botón** en la D5500: dial trasero, botón táctil `[i]`, switch de VR en lente.
-3. **🧠 Mentor IA Interactivo (Gemini):**
+4. **🔭 Simulador Visual de Focal DX:**
+   - Vista interactiva de ángulo de visión, compresión de planos y bokeh de 18mm a 200mm (equivalente a 27mm–300mm en FX).
+5. **🎯 Misiones de Campo:**
+   - Desafíos fotográficos prácticos con checklist y guardado en `localStorage`.
+6. **🧠 Mentor IA Interactivo (Gemini 3.8 Flash):**
    - Asistente conversacional con **Google Gemini** en español rioplatense (uruguayo).
-   - Acceso rápido a preguntas frecuentes en 1 clic y fallback determinista offline.
+   - Acceso rápido a preguntas frecuentes en 1 clic y respuestas botón a botón.
+7. **📱 PWA Instalable y Diseño Multi-Página:**
+   - Cada herramienta en su propia vista dedicada con barra de pestañas desktop y **Mobile Bottom Tab Bar** estilo app nativa iOS/Android.
+   - Soporte PWA instalable en Chrome/Safari y Service Worker v2 offline-ready.
 
 ---
 

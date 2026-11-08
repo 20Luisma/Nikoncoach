@@ -37,6 +37,7 @@ ob_start();
     <nav class="nav-tabs" aria-label="Secciones">
         <a href="#escaner" class="tab-link active">📸 Escáner de Escena</a>
         <a href="#equipo" class="tab-link">🎒 Tu Hardware</a>
+        <a href="#botones" class="tab-link">🎮 Botones D5500</a>
         <a href="#mochila" class="tab-link">🧭 Asesor Mochila</a>
         <a href="#calculadora" class="tab-link">⚙️ Receta Botón a Botón</a>
         <a href="#simulador" class="tab-link">🔭 Simulador DX</a>

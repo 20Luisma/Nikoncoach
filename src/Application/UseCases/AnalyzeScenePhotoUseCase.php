@@ -41,3 +41,4 @@ final readonly class AnalyzeScenePhotoUseCase
         return $this->geminiClient->analyzeScenePhoto($base64Image, $mimeType, $userNote);
     }
 }
+

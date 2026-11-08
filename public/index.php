@@ -63,7 +63,32 @@ $path = '/' . trim($path, '/');
 switch ($path) {
     case '/':
     case '/index.php':
-        $homeController->index();
+    case '/escaner':
+        $homeController->scanner();
+        break;
+
+    case '/mochila':
+        $homeController->backpack();
+        break;
+
+    case '/receta':
+        $homeController->recipe();
+        break;
+
+    case '/simulador':
+        $homeController->simulator();
+        break;
+
+    case '/misiones':
+        $homeController->missions();
+        break;
+
+    case '/mentor':
+        $homeController->mentor();
+        break;
+
+    case '/equipo':
+        $homeController->gear();
         break;
 
     case '/api/recommend-lens':
