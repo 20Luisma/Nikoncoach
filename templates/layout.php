@@ -39,9 +39,16 @@ $navItems = [
     <link rel="manifest" href="<?= $basePath ?>/manifest.json">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= $basePath ?>/css/style.css">
+    
+    <style>
+        /* CSS crítico de seguridad para evitar parpadeos y estilos por defecto del navegador */
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; }
+    </style>
+    
+    <link rel="stylesheet" href="<?= $basePath ?>/css/style.css?v=<?= filemtime(__DIR__ . '/../public/css/style.css') ?>">
 </head>
 <body data-base-path="<?= htmlspecialchars($basePath) ?>" data-page="<?= htmlspecialchars($currentPage) ?>">
     <div class="app-container">
@@ -113,6 +120,6 @@ $navItems = [
         </div>
     </nav>
 
-    <script src="<?= $basePath ?>/js/app.js"></script>
+    <script src="<?= $basePath ?>/js/app.js?v=<?= filemtime(__DIR__ . '/../public/js/app.js') ?>"></script>
 </body>
 </html>

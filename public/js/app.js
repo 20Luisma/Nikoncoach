@@ -450,43 +450,45 @@ document.addEventListener('DOMContentLoaded', () => {
         const mm = parseInt(focalMm, 10);
         const eq35 = (mm * 1.5).toFixed(1);
 
-        if (simDisplay) simDisplay.textContent = `${mm} mm`;
+        if (simDisplay) simDisplay.textContent = `${mm}`;
         if (hudFocalReal) hudFocalReal.textContent = `${mm} mm`;
-        if (hudFocalEq) hudFocalEq.textContent = `${eq35} mm eq.`;
+        if (hudFocalEq) hudFocalEq.textContent = `${eq35} mm eq. Full Frame`;
         if (vfFocal) vfFocal.textContent = `${mm}mm`;
         if (vfCrop) vfCrop.textContent = `${eq35}mm eq.`;
 
         // Cálculo de ángulo de visión DX aproximado
         // 2 * atan(15.6 / (2 * f)) en grados
         const angle = Math.round(2 * Math.atan(15.6 / (2 * mm)) * (180 / Math.PI));
-        if (hudAngle) hudAngle.textContent = `${angle}°`;
+        if (hudAngle) hudAngle.textContent = `Ángulo: ${angle}°`;
 
         // Lente apto
         if (hudLensFit) {
             if (mm <= 55) {
-                hudLensFit.textContent = '18-55mm y 18-200mm';
-                hudLensFit.className = 'hud-val text-green';
+                hudLensFit.textContent = 'Apto: 18-55mm y 18-200mm';
+                hudLensFit.className = 'meta-tag lens-badge';
             } else {
-                hudLensFit.textContent = 'Exclusivo 18-200mm VR I';
-                hudLensFit.className = 'hud-val text-gold';
+                hudLensFit.textContent = 'Requiere 18-200mm VR I';
+                hudLensFit.className = 'meta-tag';
+                hudLensFit.style.borderColor = 'var(--nikon-yellow-border)';
+                hudLensFit.style.color = 'var(--nikon-yellow)';
             }
         }
 
         // Compresión de fondo y bokeh
         if (hudBokehLevel) {
-            if (mm < 35) {
-                hudBokehLevel.textContent = 'Gran angular • Fondo lejano y muy nítido';
-            } else if (mm <= 70) {
-                hudBokehLevel.textContent = 'Perspectiva natural • Fondo equilibrado';
-            } else if (mm <= 135) {
-                hudBokehLevel.textContent = 'Compresión tele pro • Fondo suave y desenfocado';
+            if (mm < 30) {
+                hudBokehLevel.textContent = 'Gran angular • Máxima amplitud y todo en foco';
+            } else if (mm <= 55) {
+                hudBokehLevel.textContent = 'Visión natural • Perspectiva equilibrada';
+            } else if (mm <= 120) {
+                hudBokehLevel.textContent = 'Retrato tele • Sujeto nítido y fondo desenfocado';
             } else {
-                hudBokehLevel.textContent = 'Supertele • Fondo aplastado en bokeh cremoso';
+                hudBokehLevel.textContent = 'Supertele • Fondo aplastado con bokeh cremoso';
             }
         }
 
         // Animación de escala en el visor (de 1x a 4.5x)
-        const scale = 0.8 + ((mm - 18) / (200 - 18)) * 3.4;
+        const scale = 0.85 + ((mm - 18) / (200 - 18)) * 3.3;
         if (simSubject) {
             simSubject.style.transform = `scale(${scale.toFixed(2)})`;
         }
@@ -495,7 +497,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const blurPx = ((mm - 18) / (200 - 18)) * 14;
         if (simBg) {
             simBg.style.filter = `blur(${blurPx.toFixed(1)}px)`;
-            simBg.style.transform = `scale(${(1 + (scale - 1) * 0.4).toFixed(2)})`;
+            simBg.style.transform = `scale(${(1 + (scale - 1) * 0.35).toFixed(2)})`;
         }
 
         // Actualizar botón preset activo
@@ -504,6 +506,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.classList.add('active');
             } else {
                 btn.classList.remove('active');
+            }
+        });
+
+        // Actualizar marcas de escala en el anillo
+        const ringTicks = document.querySelectorAll('.ring-ticks .tick');
+        ringTicks.forEach(tick => {
+            if (parseInt(tick.dataset.focal, 10) === mm) {
+                tick.classList.add('active');
+            } else {
+                tick.classList.remove('active');
             }
         });
     }
@@ -517,6 +529,17 @@ document.addEventListener('DOMContentLoaded', () => {
     presetBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const focal = btn.dataset.focal;
+            if (simRange && focal) {
+                simRange.value = focal;
+                updateSimulatorUI(focal);
+            }
+        });
+    });
+
+    const ringTicks = document.querySelectorAll('.ring-ticks .tick');
+    ringTicks.forEach(tick => {
+        tick.addEventListener('click', () => {
+            const focal = tick.dataset.focal;
             if (simRange && focal) {
                 simRange.value = focal;
                 updateSimulatorUI(focal);

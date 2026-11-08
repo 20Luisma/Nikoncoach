@@ -11,7 +11,7 @@
 
     # Redirigir la raíz hacia public/
     RewriteRule ^$ public/ [L]
-    RewriteCond %{REQUEST_URI} !public/
+    RewriteCond %{REQUEST_URI} !^/public/
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
 

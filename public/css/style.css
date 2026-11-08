@@ -1120,209 +1120,436 @@ body {
 }
 
 /* ==========================================================================
-   Simulador Visual de Focal DX (Responsive)
+   Simulador Óptico Nikon D5500 (Sensor DX) — Rediseño Pro
    ========================================================================== */
 
-.simulator-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+.sim-deck {
+    display: flex;
+    flex-direction: column;
     gap: 1.5rem;
+    padding: 1.5rem;
+}
+
+/* 1. Hero Display de la Focal Actual */
+.focal-hero-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.75rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.focal-main-val {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+}
+
+.focal-digits {
+    font-family: var(--font-mono);
+    font-size: clamp(2.5rem, 6vw, 3.75rem);
+    font-weight: 800;
+    line-height: 1;
+    color: var(--nikon-yellow);
+    letter-spacing: -0.04em;
+    text-shadow: 0 0 20px rgba(255, 230, 0, 0.25);
+}
+
+.focal-unit {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.focal-meta-strip {
+    display: flex;
+    gap: 0.65rem;
+    flex-wrap: wrap;
     align-items: center;
 }
 
-@media (max-width: 860px) {
-    .simulator-layout {
-        grid-template-columns: 1fr;
-    }
-}
-
-.sim-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 1.15rem;
-}
-
-.sim-lbl {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    display: block;
-    margin-bottom: 0.5rem;
-}
-
-.preset-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-}
-
-.btn-preset {
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-secondary);
-    font-family: var(--font-sans);
-    font-size: 0.78rem;
-    font-weight: 600;
-    padding: 0.45rem 0.75rem;
-    border-radius: var(--radius-pill);
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.btn-preset:hover, .btn-preset.active {
-    background: var(--nikon-yellow);
-    color: #000;
-    border-color: var(--nikon-yellow);
-}
-
-.sim-hud-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.65rem;
-}
-
-.hud-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
-    padding: 0.65rem 0.85rem;
-}
-
-.hud-card.span-2 {
-    grid-column: span 2;
-}
-
-.hud-label {
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    display: block;
-    text-transform: uppercase;
-    margin-bottom: 0.2rem;
-}
-
-.hud-val {
+.meta-tag {
     font-family: var(--font-mono);
-    font-size: 0.95rem;
-    font-weight: 700;
+    font-size: 0.82rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    padding: 0.45rem 0.85rem;
+    border-radius: var(--radius-pill);
     color: var(--text-primary);
 }
 
-/* Visor óptico animado */
-.viewfinder-frame {
-    position: relative;
-    width: 100%;
-    height: 320px;
-    background: #000;
-    border-radius: var(--radius-lg);
-    border: 2px solid var(--border-subtle);
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+.meta-tag.lens-badge {
+    background: var(--nikon-green-dim);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #34D399;
+    font-weight: 700;
 }
 
-@media (max-width: 500px) {
-    .viewfinder-frame {
-        height: 250px;
+/* 2. Anillo de Zoom Nikon (Slider con marcas) */
+.zoom-ring-module {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+}
+
+.ring-track-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.ring-title {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+.ring-bokeh-hint {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--nikon-yellow);
+}
+
+.ring-slider-wrapper {
+    position: relative;
+    padding: 0.5rem 0.25rem;
+}
+
+.ring-slider {
+    width: 100%;
+    height: 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #0E131C;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    outline: none;
+    cursor: pointer;
+}
+
+.ring-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--nikon-yellow);
+    border: 3px solid #000;
+    box-shadow: 0 0 12px rgba(255, 230, 0, 0.6);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.ring-slider::-webkit-slider-thumb:hover,
+.ring-slider::-webkit-slider-thumb:active {
+    transform: scale(1.18);
+}
+
+.ring-ticks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.85rem;
+    padding: 0 4px;
+}
+
+.ring-ticks .tick {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    transition: var(--transition);
+}
+
+.ring-ticks .tick:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.ring-ticks .tick.active {
+    color: var(--nikon-yellow);
+    font-weight: 800;
+}
+
+/* 3. Tarjetas Visuales de Focales (Presets modernos) */
+.focal-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.85rem;
+}
+
+.focal-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    text-align: left;
+    cursor: pointer;
+    transition: var(--transition);
+    color: inherit;
+    width: 100%;
+}
+
+.focal-card:hover {
+    border-color: rgba(255, 230, 0, 0.4);
+    background: var(--bg-card);
+    transform: translateY(-2px);
+}
+
+.focal-card.active {
+    border-color: var(--nikon-yellow);
+    background: rgba(255, 230, 0, 0.06);
+    box-shadow: 0 0 15px rgba(255, 230, 0, 0.12);
+}
+
+.card-icon {
+    font-size: 1.6rem;
+    line-height: 1;
+    flex-shrink: 0;
+    background: var(--bg-card);
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+}
+
+.focal-card.active .card-icon {
+    border-color: var(--nikon-yellow-border);
+    background: var(--nikon-yellow-dim);
+}
+
+.card-info {
+    flex: 1;
+}
+
+.card-focal {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--nikon-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.15rem;
+}
+
+.card-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.card-desc {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* 4. Visor Réflex Óptico D5500 */
+.viewfinder-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.viewfinder-title-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.vf-live-tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--nikon-yellow);
+    background: var(--nikon-yellow-dim);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--nikon-yellow-border);
+}
+
+.nikon-viewfinder {
+    position: relative;
+    background: #000;
+    border: 8px solid #1E2530;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.vf-frame {
+    position: relative;
+    width: 100%;
+    height: 380px;
+    overflow: hidden;
+    background: #000;
+}
+
+@media (max-width: 600px) {
+    .vf-frame {
+        height: 280px;
     }
 }
 
-.viewfinder-overlay {
+/* Regla de tercios del visor */
+.vf-grid-thirds {
     position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: 10;
-    border: 1px solid rgba(255, 230, 0, 0.25);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.viewfinder-crosshair {
+.vf-grid-thirds::before,
+.vf-grid-thirds::after {
+    content: '';
+    position: absolute;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.vf-grid-thirds::before {
+    top: 33.333%;
+    bottom: 33.333%;
+    left: 0;
+    right: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.vf-grid-thirds::after {
+    left: 33.333%;
+    right: 33.333%;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Punto de enfoque central AF Nikon */
+.vf-focus-point {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 44px;
-    height: 44px;
-    border: 2px solid rgba(255, 230, 0, 0.6);
+    width: 38px;
+    height: 38px;
+    border: 2px solid rgba(255, 230, 0, 0.8);
     border-radius: 4px;
+    z-index: 15;
+    pointer-events: none;
+    box-shadow: 0 0 10px rgba(255, 230, 0, 0.5);
 }
 
-.viewfinder-crosshair::before, .viewfinder-crosshair::after {
+.vf-focus-point::after {
     content: '';
     position: absolute;
-    background: rgba(255, 230, 0, 0.6);
-}
-
-.viewfinder-crosshair::before {
     top: 50%;
-    left: -8px;
-    right: -8px;
-    height: 1px;
-    transform: translateY(-50%);
-}
-
-.viewfinder-crosshair::after {
     left: 50%;
-    top: -8px;
-    bottom: -8px;
-    width: 1px;
-    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: var(--nikon-red);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 8px var(--nikon-red);
 }
 
-.viewfinder-hud-top, .viewfinder-hud-bottom {
-    display: flex;
-    justify-content: space-between;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--nikon-yellow);
-    text-shadow: 0 0 4px #000;
-}
-
-.sim-scene {
+/* Escena y fondo simulado */
+.vf-scene {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, #1e3a8a 0%, #3b82f6 40%, #065f46 65%, #022c22 100%);
+    background: linear-gradient(180deg, #1e3a8a 0%, #38bdf8 35%, #059669 60%, #064e3b 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
 }
 
-.sim-bg {
+.vf-bg {
     position: absolute;
-    inset: -50%;
+    inset: -30%;
     background-image: 
-        radial-gradient(circle at 50% 30%, rgba(255, 230, 0, 0.2) 0%, transparent 60%),
-        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0, rgba(255, 255, 255, 0.03) 10px, transparent 10px, transparent 20px);
-    transition: filter 0.3s ease, transform 0.3s ease;
+        radial-gradient(circle at 50% 30%, rgba(255, 230, 0, 0.3) 0%, transparent 55%),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.04) 0, rgba(255, 255, 255, 0.04) 12px, transparent 12px, transparent 24px);
+    transition: filter 0.25s ease-out, transform 0.25s ease-out;
 }
 
-.sim-subject {
+.vf-subject {
     position: relative;
     z-index: 5;
     text-align: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.subject-icon {
-    font-size: 3.5rem;
-    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
+.subject-figure {
+    font-size: clamp(3rem, 7vw, 4.5rem);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6));
 }
 
-.subject-label {
-    display: block;
-    font-size: 0.7rem;
+.subject-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
     font-weight: 700;
     color: #fff;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 0.2rem 0.5rem;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 0.2rem 0.6rem;
     border-radius: var(--radius-pill);
     margin-top: 0.35rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* HUD inferior del visor estilo Réflex D5500 */
+.vf-display-hud {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.88);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: #34D399; /* Verde fósforo LCD */
+    z-index: 20;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.vf-hud-left,
+.vf-hud-right {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.vf-hud-focus {
+    color: var(--nikon-yellow);
+    font-weight: 800;
+    letter-spacing: 0.05em;
+}
+
+.vf-hud-vr {
+    color: var(--nikon-yellow);
+    font-weight: 700;
 }
 
 /* ==========================================================================

@@ -8,77 +8,126 @@ declare(strict_types=1);
 ?>
 <section class="page-container">
     <div class="page-header">
-        <span class="section-tag">SIMULADOR VISUAL DE ENCUADRE • SENSOR DX</span>
-        <h2>El Efecto de la Focal y la Compresión</h2>
-        <p>Descubrí en tiempo real cómo cambia el ángulo de visión de 18mm a 200mm y cómo el teleobjetivo aplana la perspectiva y disuelve el fondo en tu sensor con factor 1.5x.</p>
+        <span class="section-tag">SIMULADOR ÓPTICO NIKON • SENSOR DX 1.5x</span>
+        <h2>Simulador de Focal y Compresión</h2>
+        <p>Mirá a través del visor de tu <strong>Nikon D5500</strong>. Deslizá el anillo para entender cómo cambia el ángulo de visión de 18mm a 200mm y cómo el teleobjetivo aplasta el fondo para lograr desenfoques suaves (bokeh).</p>
     </div>
 
-    <div class="simulator-layout panel-box">
-        <div class="sim-controls">
-            <div class="sim-presets">
-                <span class="sim-lbl">Focales Clave en tu Equipo:</span>
-                <div class="preset-buttons">
-                    <button type="button" class="btn-preset active" data-focal="18">18mm (Gran Angular)</button>
-                    <button type="button" class="btn-preset" data-focal="35">35mm (Ojo humano)</button>
-                    <button type="button" class="btn-preset" data-focal="55">55mm (Límite 18-55)</button>
-                    <button type="button" class="btn-preset" data-focal="105">105mm (Retrato Pro)</button>
-                    <button type="button" class="btn-preset" data-focal="135">135mm (Compresión Bokeh)</button>
-                    <button type="button" class="btn-preset" data-focal="200">200mm (Supertele 300mm eq.)</button>
-                </div>
+    <div class="sim-deck panel-box">
+        <!-- Display principal de la focal actual -->
+        <div class="focal-hero-display">
+            <div class="focal-main-val">
+                <span id="sim-focal-display" class="focal-digits">18</span>
+                <span class="focal-unit">mm</span>
             </div>
-
-            <div class="form-group">
-                <div class="label-with-val">
-                    <label for="sim-focal-range" class="form-label">Ajuste fino de focal:</label>
-                    <span id="sim-focal-display" class="slider-val">18 mm</span>
-                </div>
-                <input type="range" id="sim-focal-range" class="form-range" min="18" max="200" step="1" value="18">
+            <div class="focal-meta-strip">
+                <span class="meta-tag" id="hud-focal-eq">27.0 mm eq. Full Frame</span>
+                <span class="meta-tag" id="hud-angle">Ángulo: 76°</span>
+                <span class="meta-tag lens-badge" id="hud-lens-fit">Apto: 18-55mm y 18-200mm</span>
             </div>
+        </div>
 
-            <!-- HUD de Información en Tiempo Real -->
-            <div class="sim-hud-grid">
-                <div class="hud-card">
-                    <span class="hud-label">Focal Real D5500</span>
-                    <span id="hud-focal-real" class="hud-val text-gold">18 mm</span>
-                </div>
-                <div class="hud-card">
-                    <span class="hud-label">Eq. Full Frame (1.5x)</span>
-                    <span id="hud-focal-eq" class="hud-val">27.0 mm</span>
-                </div>
-                <div class="hud-card">
-                    <span class="hud-label">Ángulo de Visión</span>
-                    <span id="hud-angle" class="hud-val">76°</span>
-                </div>
-                <div class="hud-card">
-                    <span class="hud-label">Lente Apto</span>
-                    <span id="hud-lens-fit" class="hud-val text-green">18-55mm y 18-200mm</span>
-                </div>
-                <div class="hud-card span-2">
-                    <span class="hud-label">Compresión y Desenfoque de Fondo (Bokeh)</span>
-                    <span id="hud-bokeh-level" class="hud-val">Amplio campo • Fondo nítido</span>
+        <!-- Anillo de Zoom Nikon (Slider visual táctil) -->
+        <div class="zoom-ring-module">
+            <div class="ring-track-label">
+                <span class="ring-title">ANILLO DE ZOOM FÍSICO</span>
+                <span id="hud-bokeh-level" class="ring-bokeh-hint">Gran angular • Máxima amplitud</span>
+            </div>
+            
+            <div class="ring-slider-wrapper">
+                <input type="range" id="sim-focal-range" class="ring-slider" min="18" max="200" step="1" value="18">
+                <div class="ring-ticks">
+                    <span class="tick active" data-focal="18">18</span>
+                    <span class="tick" data-focal="24">24</span>
+                    <span class="tick" data-focal="35">35</span>
+                    <span class="tick" data-focal="55">55</span>
+                    <span class="tick" data-focal="70">70</span>
+                    <span class="tick" data-focal="105">105</span>
+                    <span class="tick" data-focal="135">135</span>
+                    <span class="tick" data-focal="200">200</span>
                 </div>
             </div>
         </div>
 
-        <!-- Visor óptico interactivo -->
-        <div class="viewfinder-frame">
-            <div class="viewfinder-overlay">
-                <div class="viewfinder-crosshair"></div>
-                <div class="viewfinder-hud-top">
-                    <span>DX SENSOR 1.5x</span>
-                    <span id="vf-focal-indicator">18mm</span>
+        <!-- 4 Tarjetas visuales de situaciones fotográficas (Presets modernos) -->
+        <div class="focal-cards-grid">
+            <button type="button" class="focal-card btn-preset active" data-focal="18">
+                <div class="card-icon">🏔️</div>
+                <div class="card-info">
+                    <div class="card-focal">18mm</div>
+                    <div class="card-title">Paisaje & Calle</div>
+                    <div class="card-desc">Gran angular. Máxima amplitud de escena y todo en foco.</div>
                 </div>
-                <div class="viewfinder-hud-bottom">
-                    <span>AF-S [ • ]</span>
-                    <span id="vf-crop-indicator">27mm eq.</span>
+            </button>
+
+            <button type="button" class="focal-card btn-preset" data-focal="35">
+                <div class="card-icon">👁️</div>
+                <div class="card-info">
+                    <div class="card-focal">35mm</div>
+                    <div class="card-title">Visión Natural</div>
+                    <div class="card-desc">Equivale a 50mm FX. Perspectiva exacta del ojo humano.</div>
                 </div>
+            </button>
+
+            <button type="button" class="focal-card btn-preset" data-focal="105">
+                <div class="card-icon">👤</div>
+                <div class="card-info">
+                    <div class="card-focal">105mm</div>
+                    <div class="card-title">Retrato & Bokeh</div>
+                    <div class="card-desc">Aislar personas con fondo borroso sin deformar rasgos.</div>
+                </div>
+            </button>
+
+            <button type="button" class="focal-card btn-preset" data-focal="200">
+                <div class="card-icon">🦅</div>
+                <div class="card-info">
+                    <div class="card-focal">200mm</div>
+                    <div class="card-title">Superteleobjetivo</div>
+                    <div class="card-desc">300mm eq. Trae sujetos lejanos y aplasta la perspectiva.</div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Visor Óptico Réflex Réplica Nikon D5500 -->
+        <div class="viewfinder-section">
+            <div class="viewfinder-title-bar">
+                <span>👁️ Visor Réflex D5500 (Sensor DX)</span>
+                <span class="vf-live-tag">EN VIVO</span>
             </div>
 
-            <div id="sim-scene-wrapper" class="sim-scene">
-                <div id="sim-scene-bg" class="sim-bg"></div>
-                <div id="sim-subject" class="sim-subject">
-                    <div class="subject-icon">🚶‍♂️</div>
-                    <span class="subject-label">Sujeto a 5 metros</span>
+            <div class="nikon-viewfinder">
+                <div class="vf-frame">
+                    <!-- Cuadrícula regla de tercios -->
+                    <div class="vf-grid-thirds"></div>
+                    
+                    <!-- Punto de enfoque central activo Nikon -->
+                    <div class="vf-focus-point active"></div>
+
+                    <!-- Escena con sujeto y fondo interactivo -->
+                    <div id="sim-scene-wrapper" class="vf-scene">
+                        <div id="sim-scene-bg" class="vf-bg"></div>
+                        <div id="sim-subject" class="vf-subject">
+                            <div class="subject-figure">🧍‍♂️</div>
+                            <span class="subject-tag">Sujeto a 5m</span>
+                        </div>
+                    </div>
+
+                    <!-- HUD inferior del visor Nikon (estilo OLED / LCD) -->
+                    <div class="vf-display-hud">
+                        <div class="vf-hud-left">
+                            <span class="vf-hud-item">⚡ 1/250</span>
+                            <span class="vf-hud-item">f/5.6</span>
+                            <span class="vf-hud-item">ISO 200</span>
+                        </div>
+                        <div class="vf-hud-center">
+                            <span class="vf-hud-focus">[ • AF-S ]</span>
+                        </div>
+                        <div class="vf-hud-right">
+                            <span class="vf-hud-item" id="vf-focal-indicator">18mm</span>
+                            <span class="vf-hud-item" id="vf-crop-indicator">27mm eq.</span>
+                            <span class="vf-hud-vr">VR ON</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

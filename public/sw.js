@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nikoncoach-v2';
+const CACHE_NAME = 'nikoncoach-v3';
 const STATIC_ASSETS = [
   './',
   'mochila',
