@@ -1,11 +1,11 @@
-const CACHE_NAME = 'nikoncoach-v6';
+const CACHE_NAME = 'nikoncoach-v7';
 const STATIC_ASSETS = [
   './',
   'css/style.css',
   'js/app.js',
   'manifest.json',
-  'assets/icon-192.png',
-  'assets/icon-512.png',
+  'assets/icons/icon-192.png',
+  'assets/icons/icon-512.png',
   'assets/icon.svg',
 ];
 

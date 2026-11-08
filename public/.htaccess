@@ -19,3 +19,10 @@
     </IfModule>
 </FilesMatch>
 
+# Permitir a Google WebAPK server descargar iconos para empaquetar la app en Android
+<FilesMatch "\.(png|svg|ico)$">
+    <IfModule mod_headers.c>
+        Header set Access-Control-Allow-Origin "*"
+    </IfModule>
+</FilesMatch>
+

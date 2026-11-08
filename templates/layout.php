@@ -35,7 +35,7 @@ $navItems = [
     <meta name="apple-mobile-web-app-title" content="NikonCoach">
     
     <link rel="icon" type="image/svg+xml" href="<?= $basePath ?>/assets/icon.svg">
-    <link rel="apple-touch-icon" href="<?= $basePath ?>/assets/icon-192.png">
+    <link rel="apple-touch-icon" href="<?= $basePath ?>/assets/icons/icon-192.png">
     <link rel="manifest" href="<?= $basePath ?>/manifest.json?v=<?= filemtime(__DIR__ . '/../public/manifest.json') ?>">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
