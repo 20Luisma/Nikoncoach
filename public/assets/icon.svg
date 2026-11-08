@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#182232" />
+      <stop offset="50%" stop-color="#101622" />
+      <stop offset="100%" stop-color="#080B10" />
+    </linearGradient>
+    <linearGradient id="nikonGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF04D" />
+      <stop offset="100%" stop-color="#E5B800" />
+    </linearGradient>
+    <linearGradient id="lensGlass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="50%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <filter id="yellowGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#FFE600" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Fondo oscuro con esquinas redondeadas -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" stroke="#242E40" stroke-width="4" />
+
+  <!-- Franja decorativa Nikon en la esquina superior -->
+  <rect x="56" y="56" width="36" height="12" rx="3" fill="#FFE600" />
+  <rect x="98" y="56" width="18" height="12" rx="3" fill="#E11D48" />
+
+  <!-- Cuerpo de la Cámara Réflex Estilizada -->
+  <!-- Pentaprisma superior -->
+  <polygon points="206,140 306,140 340,190 172,190" fill="#1E293B" stroke="#334155" stroke-width="4" />
+  <!-- Zapata de flash / visor -->
+  <rect x="236" y="120" width="40" height="20" rx="3" fill="#334155" />
+
+  <!-- Anillo exterior dorado del lente (Montura Nikon F) -->
+  <circle cx="256" cy="295" r="135" fill="none" stroke="url(#nikonGold)" stroke-width="8" filter="url(#yellowGlow)" />
+  <circle cx="256" cy="295" r="120" fill="url(#lensGlass)" stroke="#334155" stroke-width="3" />
+
+  <!-- Elementos de la lente (Apertura / Diafragma) -->
+  <circle cx="256" cy="295" r="80" fill="none" stroke="rgba(255, 230, 0, 0.4)" stroke-width="3" stroke-dasharray="16,8" />
+  <circle cx="256" cy="295" r="45" fill="#0B0E14" stroke="#FFE600" stroke-width="4" />
+  <circle cx="236" cy="275" r="14" fill="rgba(255, 255, 255, 0.4)" />
+
+  <!-- Texto NIKON COACH en el marco -->
+  <text x="256" y="465" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="28" font-weight="800" fill="#FFE600" text-anchor="middle" letter-spacing="4">NIKON COACH</text>
+</svg>

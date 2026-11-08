@@ -140,6 +140,37 @@ body {
     color: var(--nikon-yellow);
 }
 
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+    align-self: center;
+}
+
+.btn-install-pwa {
+    background: var(--nikon-yellow);
+    color: #000;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 800;
+    padding: 0.45rem 0.95rem;
+    border-radius: var(--radius-pill);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(255, 230, 0, 0.35);
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 38px;
+}
+
+.btn-install-pwa:hover {
+    background: var(--nikon-yellow-hover);
+    transform: translateY(-1px);
+}
+
 .camera-pill {
     display: inline-flex;
     align-items: center;

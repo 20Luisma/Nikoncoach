@@ -22,9 +22,14 @@ ob_start();
             <h1 class="main-title">Mentor y Asesor Fotográfico de Martín</h1>
             <p class="subtitle">Técnica fotográfica, física real y recetas botón a botón para tu <strong>Nikon D5500</strong> con tus dos lentes.</p>
         </div>
-        <div class="camera-pill">
-            <span class="pill-dot"></span>
-            <span class="pill-text">Nikon D5500 DX • 24.2 MP • 1.5x Crop</span>
+        <div class="header-actions">
+            <button type="button" id="btn-install-app" class="btn-install-pwa hidden">
+                <span>📲</span> Instalar App
+            </button>
+            <div class="camera-pill">
+                <span class="pill-dot"></span>
+                <span class="pill-text">Nikon D5500 DX • 24.2 MP • 1.5x Crop</span>
+            </div>
         </div>
     </header>
 

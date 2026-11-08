@@ -556,6 +556,44 @@ document.addEventListener('DOMContentLoaded', () => {
         return div.innerHTML;
     }
 
+    // =========================================================================
+    // 7. PWA Service Worker & Instalación de App
+    // =========================================================================
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            const swUrl = `${basePath}/sw.js`;
+            navigator.serviceWorker.register(swUrl).then(() => {
+                console.log('[NikonCoach PWA] Service Worker registrado.');
+            }).catch((err) => {
+                console.warn('[NikonCoach PWA] Error al registrar Service Worker:', err);
+            });
+        });
+    }
+
+    let deferredInstallPrompt = null;
+    const installAppBtn = document.getElementById('btn-install-app');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevenir el banner automático para mostrar nuestro botón elegante
+        e.preventDefault();
+        deferredInstallPrompt = e;
+        if (installAppBtn) {
+            installAppBtn.classList.remove('hidden');
+        }
+    });
+
+    if (installAppBtn) {
+        installAppBtn.addEventListener('click', async () => {
+            if (!deferredInstallPrompt) return;
+            deferredInstallPrompt.prompt();
+            const { outcome } = await deferredInstallPrompt.userChoice;
+            if (outcome === 'accepted') {
+                installAppBtn.classList.add('hidden');
+            }
+            deferredInstallPrompt = null;
+        });
+    }
+
     // Inicializaciones
     if (distanceSlider) updateDistanceUI(distanceSlider.value);
     syncFocalBounds();
