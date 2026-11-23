@@ -82,6 +82,7 @@
 - **Estación 5 (Playwright E2E):** `playwright.config.js` con `webServer` PHP (`public/router.php`) y 6 escenarios E2E en `tests/e2e/nikoncoach.spec.js` (flujos reales + 404 JSON y validación negativa de API).
 - **Estación 7 (Deuda + Observabilidad):** Modularizado `public/js/app.js` (935 líneas -> entrypoint de 30 líneas + 8 módulos ES en `public/js/modules/`), refactorizado `templates/home.php` a wrapper DRY (0 duplicados), y sumado `ErrorLogger` fail-safe con `set_exception_handler`, logs JSON y soporte `SENTRY_DSN`.
 - **Veredicto ITV oficial:** `APTO` — 7 aptas · 0 observaciones · 0 desfavorables · 0 omitidas.
+- **Despliegue y checkpoint:** Subido a Hostinger (`https://contenido.creawebes.com/NikonCoach/`, HTTP 200 verificado) y etiquetado como `v-estable-2026-11-23`.
 
 ### 2026-11-08 (Sesión 5 — Soporte WebAPK Android Calibrado con Vuelos Martín, Chat de Escáner y Simulador Refinado)
 - **Motivo:** Android Chrome arrojaba "no se ha podido instalar / abrir la aplicación" tras pulsar "Instalar App".
