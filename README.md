@@ -45,47 +45,64 @@
 
 ## 🏗️ Arquitectura Técnica
 
-Clean Architecture estricta en **PHP 8.4+** sin frameworks pesados:
+Clean Architecture estricta en **PHP 8.4+** sin frameworks pesados (producción corre 100% sin `vendor/` ni `node_modules/`):
 ```
 NikonCoach/
 ├── src/
 │   ├── Domain/
-│   │   ├── Entities/         # CameraProfile, Lens, PhotoScene, ShootingRecommendation
-│   │   └── Repositories/     # EquipmentRepositoryInterface
+│   │   ├── Entities/         # CameraProfile, Lens, PhotoScene, ShootingRecommendation, Mission
+│   │   └── Repositories/     # EquipmentRepositoryInterface, MissionRepositoryInterface
 │   ├── Application/
-│   │   └── UseCases/         # RecommendLensUseCase, CalculateExposureUseCase, AskMentorUseCase
+│   │   └── UseCases/         # RecommendLens, CalculateExposure, AskMentor, AnalyzeScenePhoto, GetMissions
 │   ├── Infrastructure/
-│   │   ├── AI/               # GeminiClient (REST API con fallback offline)
-│   │   ├── Repositories/     # EquipmentRepository (Hardware real de Martín)
+│   │   ├── AI/               # GeminiClient (REST API con fallback determinista)
+│   │   ├── Observability/    # ErrorLogger fail-safe (JSON local + SENTRY_DSN opcional)
+│   │   ├── Repositories/     # EquipmentRepository, MissionRepository
 │   │   └── Config.php        # Carga limpia de .env
 │   └── Presentation/
 │       └── Controllers/      # HomeController, ApiController
-├── templates/                # HTML5 semántico (home.php, layout.php)
+├── templates/
+│   ├── layout.php            # Layout base + navegación desktop/móvil
+│   ├── home.php              # Wrapper DRY que delega en templates/pages/
+│   └── pages/                # Vistas dedicadas (scanner, backpack, recipe, simulator, missions, mentor, gear)
 ├── public/
 │   ├── css/style.css         # Design Tokens, Dark Mode Nikon (#FFE600), micro-animaciones
-│   ├── js/app.js             # Vanilla JS modular desacoplado
-│   └── index.php             # Front Controller y Router PSR-4
-└── bin/deploy.sh             # Script de despliegue a Hostinger
+│   ├── js/app.js             # Entrypoint ES Module (<35 líneas)
+│   ├── js/modules/           # 8 módulos ES desacoplados (scanner, backpack, exposure, simulator, missions, mentor, pwa, formatters)
+│   ├── index.php             # Front Controller PSR-4 + ErrorLogger
+│   └── router.php            # Router local para `php -S` y Playwright
+├── tests/
+│   ├── Unit/                 # Suite PHPUnit aislada (25 tests, 83.86% cobertura Xdebug)
+│   └── e2e/                  # Suite Playwright en Chromium (6 escenarios + 404/API negativa)
+├── docs/adr/                 # Decisiones de arquitectura (ADRs)
+├── composer.json / package.json  # Herramientas dev (PHPStan, PHPUnit, TypeScript, Playwright)
+└── bin/deploy.sh             # Script de despliegue a Hostinger (excluye vendor/, node_modules/ y tests/)
 ```
 
 ---
 
-## ⚡ Verificación Rápida y Calidad ITV 7/7 en Local
+## ⚡ Requisitos, Instalación y Calidad ITV 7/7 en Local
+
+**Requisitos en Mac/Local:** PHP 8.4+ (con Xdebug para cobertura), Composer 2+ y Node.js 20+.  
+> **Nota:** `vendor/` y `node_modules/` son exclusivamente para desarrollo, tipado y testing local; están en `.gitignore` y `bin/deploy.sh` los excluye al subir a Hostinger.
 
 ```bash
-# 1. Instalar dependencias de desarrollo (PHPStan, PHPUnit, TypeScript, Playwright)
+# 1. Instalar herramientas de desarrollo (PHPStan, PHPUnit, TypeScript, Playwright)
 composer install && npm install
 
-# 2. Análisis estático de tipos (PHPStan nivel 5 + tsc --noEmit)
+# 2. Descargar Chromium para Playwright (solo la primera vez)
+npx playwright install chromium
+
+# 3. Análisis estático de tipos (PHPStan nivel 5 + tsc --noEmit)
 composer analyse && npm run typecheck
 
-# 3. Tests unitarios PHP con cobertura real (Xdebug >= 75%)
+# 4. Tests unitarios PHP con cobertura real (Xdebug >= 75%)
 npm test
 
-# 4. Pruebas E2E en navegador real (Playwright + Chromium)
+# 5. Pruebas E2E en navegador real (Playwright + Chromium)
 npm run test:e2e
 
-# 5. Levantar el servidor local con router limpio
+# 6. Levantar el servidor local con router limpio
 php -S 127.0.0.1:8088 -t public public/router.php
 ```
 Abrir `http://127.0.0.1:8088` en el navegador.
