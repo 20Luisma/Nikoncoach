@@ -1,5 +1,7 @@
 # 📷 NikonCoach
 
+[![CI — NikonCoach (ITV 7/7)](https://github.com/20Luisma/Nikoncoach/actions/workflows/ci.yml/badge.svg)](https://github.com/20Luisma/Nikoncoach/actions/workflows/ci.yml)
+
 > **Mentor y Asesor Fotográfico Personal** para **Nikon D5500** + **18-55mm VR II** & **18-200mm VR I**.
 
 🌐 **En producción:** [https://contenido.creawebes.com/NikonCoach/](https://contenido.creawebes.com/NikonCoach/)  

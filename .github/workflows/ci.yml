@@ -1,0 +1,55 @@
+name: CI — NikonCoach (ITV 7/7)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    name: PHP 8.4 + PHPStan + PHPUnit + TypeScript + Playwright + Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar PHP 8.4 con Xdebug
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: xdebug
+
+      - name: Configurar Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Validar composer.json e instalar dependencias PHP
+        run: |
+          composer validate --strict --no-check-publish
+          composer install --no-interaction --no-progress
+
+      - name: Instalar dependencias Node (npm ci)
+        run: npm ci
+
+      - name: Análisis estático de tipos (PHPStan + TypeScript)
+        run: |
+          composer analyse
+          npm run typecheck
+
+      - name: Tests unitarios y cobertura PHPUnit (Xdebug)
+        run: composer test
+
+      - name: Instalar Chromium para Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Pruebas E2E en navegador real
+        run: npm run test:e2e
+
+      - name: Auditoría de dependencias (0 CVEs)
+        run: |
+          composer audit --no-interaction
+          npm audit --audit-level=moderate
