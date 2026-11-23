@@ -70,16 +70,25 @@ NikonCoach/
 
 ---
 
-## ⚡ Verificación Rápida en Local
+## ⚡ Verificación Rápida y Calidad ITV 7/7 en Local
 
 ```bash
-# 1. Lint de sintaxis PHP
-find src public templates -name "*.php" -exec php -l {} \;
+# 1. Instalar dependencias de desarrollo (PHPStan, PHPUnit, TypeScript, Playwright)
+composer install && npm install
 
-# 2. Levantar el servidor local
-php -S localhost:8088 -t public/
+# 2. Análisis estático de tipos (PHPStan nivel 5 + tsc --noEmit)
+composer analyse && npm run typecheck
+
+# 3. Tests unitarios PHP con cobertura real (Xdebug >= 75%)
+npm test
+
+# 4. Pruebas E2E en navegador real (Playwright + Chromium)
+npm run test:e2e
+
+# 5. Levantar el servidor local con router limpio
+php -S 127.0.0.1:8088 -t public public/router.php
 ```
-Abrir `http://localhost:8088` en el navegador.
+Abrir `http://127.0.0.1:8088` en el navegador.
 
 ---
 

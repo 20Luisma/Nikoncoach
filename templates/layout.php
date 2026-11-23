@@ -22,34 +22,47 @@ $navItems = [
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title><?= htmlspecialchars($pageTitle ?? 'NikonCoach — Mentor Fotográfico Personal') ?></title>
-    <meta name="description" content="NikonCoach — Mentor y Asesor Fotográfico Personal de Martín para Nikon D5500, 18-55mm VR II y 18-200mm VR I.">
-    
+    <meta name="description"
+        content="NikonCoach — Mentor y Asesor Fotográfico Personal de Martín para Nikon D5500, 18-55mm VR II y 18-200mm VR I.">
+
     <!-- PWA & Mobile Web App Meta Tags -->
     <meta name="theme-color" content="#0B0E14">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="NikonCoach">
-    
+
     <link rel="icon" type="image/svg+xml" href="<?= $basePath ?>/assets/icon.svg">
     <link rel="apple-touch-icon" href="<?= $basePath ?>/assets/app-icon-192.png">
     <link rel="manifest" href="<?= $basePath ?>/manifest.json">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
     <style>
         /* CSS crítico de seguridad para evitar parpadeos y estilos por defecto del navegador */
-        a { text-decoration: none; color: inherit; }
-        button { font-family: inherit; }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            font-family: inherit;
+        }
     </style>
-    
-    <link rel="stylesheet" href="<?= $basePath ?>/css/style.css?v=<?= filemtime(__DIR__ . '/../public/css/style.css') ?>">
+
+    <link rel="stylesheet"
+        href="<?= $basePath ?>/css/style.css?v=<?= filemtime(__DIR__ . '/../public/css/style.css') ?>">
 </head>
+
 <body data-base-path="<?= htmlspecialchars($basePath) ?>" data-page="<?= htmlspecialchars($currentPage) ?>">
     <div class="app-container">
         <!-- Header Principal -->
@@ -79,8 +92,8 @@ $navItems = [
         <!-- Barra de Navegación Desktop y Tablets -->
         <nav class="desktop-nav" aria-label="Navegación principal">
             <?php foreach ($navItems as $key => $item): ?>
-                <a href="<?= htmlspecialchars($item['url']) ?>" 
-                   class="nav-tab-item <?= $currentPage === $key ? 'active' : '' ?>">
+                <a href="<?= htmlspecialchars($item['url']) ?>"
+                    class="nav-tab-item <?= $currentPage === $key ? 'active' : '' ?>">
                     <span class="tab-icon"><?= $item['icon'] ?></span>
                     <span class="tab-label"><?= htmlspecialchars($item['label']) ?></span>
                 </a>
@@ -111,8 +124,8 @@ $navItems = [
     <nav class="mobile-bottom-bar" aria-label="Navegación móvil">
         <div class="bottom-bar-inner">
             <?php foreach ($navItems as $key => $item): ?>
-                <a href="<?= htmlspecialchars($item['url']) ?>" 
-                   class="bottom-nav-item <?= $currentPage === $key ? 'active' : '' ?>">
+                <a href="<?= htmlspecialchars($item['url']) ?>"
+                    class="bottom-nav-item <?= $currentPage === $key ? 'active' : '' ?>">
                     <span class="b-icon"><?= $item['icon'] ?></span>
                     <span class="b-label"><?= htmlspecialchars($item['label']) ?></span>
                 </a>
@@ -120,6 +133,7 @@ $navItems = [
         </div>
     </nav>
 
-    <script src="<?= $basePath ?>/js/app.js?v=<?= filemtime(__DIR__ . '/../public/js/app.js') ?>"></script>
+    <script type="module" src="<?= $basePath ?>/js/app.js?v=<?= filemtime(__DIR__ . '/../public/js/app.js') ?>"></script>
 </body>
+
 </html>

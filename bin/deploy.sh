@@ -52,6 +52,12 @@ sshpass -p "$VPS_PASS" rsync -avz --delete \
     --exclude="docs/" \
     --exclude=".agents/" \
     --exclude="bin/" \
+    --exclude="node_modules/" \
+    --exclude="vendor/" \
+    --exclude="tests/" \
+    --exclude="playwright-report/" \
+    --exclude="test-results/" \
+    --exclude=".phpunit.cache/" \
     "$DIR/" \
     "$VPS_USER@$VPS_HOST:$VPS_REMOTE_PATH/"
 

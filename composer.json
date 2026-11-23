@@ -1,0 +1,30 @@
+{
+    "name": "creawebes/nikon-coach",
+    "description": "Mentor y Asesor Fotográfico Personal para Nikon D5500, 18-55mm VR II y 18-200mm VR I",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.4"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "NikonCoach\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "NikonCoach\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "XDEBUG_MODE=coverage vendor/bin/phpunit",
+        "analyse": "vendor/bin/phpstan analyse --memory-limit=512M"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

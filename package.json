@@ -1,0 +1,16 @@
+{
+  "name": "nikon-coach",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "NikonCoach — Mentor y Asesor Fotográfico Personal para Nikon D5500",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "composer test",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "typescript": "^5.8.3"
+  }
+}

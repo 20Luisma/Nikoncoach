@@ -35,7 +35,7 @@ declare(strict_types=1);
             </div>
             
             <div class="ring-slider-wrapper">
-                <input type="range" id="sim-focal-range" class="ring-slider" min="18" max="200" step="1" value="18">
+                <input type="range" id="sim-focal-range" class="ring-slider" min="18" max="200" step="1" value="18" aria-label="Distancia focal en milímetros">
                 <div class="ring-ticks">
                     <span class="tick active" data-focal="18">18</span>
                     <span class="tick" data-focal="24">24</span>

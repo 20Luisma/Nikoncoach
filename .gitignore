@@ -7,6 +7,12 @@
 vendor/
 node_modules/
 .cache/
+.phpunit.cache/
+
+# Reportes de pruebas y E2E
+playwright-report/
+test-results/
+coverage/
 
 # Sistema operativo
 .DS_Store
@@ -24,4 +30,3 @@ storage/
 # Logs
 *.log
 logs/
-

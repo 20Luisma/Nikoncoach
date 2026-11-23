@@ -32,13 +32,16 @@ use NikonCoach\Application\UseCases\CalculateExposureUseCase;
 use NikonCoach\Application\UseCases\RecommendLensUseCase;
 use NikonCoach\Infrastructure\AI\GeminiClient;
 use NikonCoach\Infrastructure\Config;
+use NikonCoach\Infrastructure\Observability\ErrorLogger;
 use NikonCoach\Infrastructure\Repositories\EquipmentRepository;
 use NikonCoach\Infrastructure\Repositories\MissionRepository;
 use NikonCoach\Presentation\Controllers\ApiController;
 use NikonCoach\Presentation\Controllers\HomeController;
 
-// Cargar variables de entorno
+// Cargar variables de entorno y observabilidad fail-safe
 Config::load(__DIR__ . '/..');
+$errorLogger = new ErrorLogger();
+$errorLogger->register();
 
 // Inyección de dependencias
 $equipmentRepo = new EquipmentRepository();

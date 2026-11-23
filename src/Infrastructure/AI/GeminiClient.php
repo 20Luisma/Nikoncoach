@@ -12,10 +12,10 @@ final class GeminiClient
     private string $model;
     private string $baseUrl;
 
-    public function __construct()
+    public function __construct(?string $apiKey = null, ?string $model = null)
     {
-        $this->apiKey = (string) Config::get('GEMINI_API_KEY', '');
-        $this->model = (string) Config::get('GEMINI_MODEL', 'gemini-3.8-flash');
+        $this->apiKey = $apiKey ?? (string) Config::get('GEMINI_API_KEY', '');
+        $this->model = $model ?? (string) Config::get('GEMINI_MODEL', 'gemini-3.8-flash');
         $this->baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
     }
 
@@ -265,6 +265,13 @@ TEXT;
                      "La compresión tele te va a dejar un desenfoque de fondo cinematográfico y los rasgos de la cara súper naturales.\n\n" .
                      "**Tip clave:** Ponete a la altura de sus ojos (agachate o desplegá la pantalla abatible de la D5500 hacia arriba para no tirarte al piso).";
         } elseif (str_contains($promptLower, 'paisaje') || str_contains($promptLower, 'montaña') || str_contains($promptLower, 'calle')) {
+            $reply = "¡Para paisaje o calle la tenés regalada, Martín! Clave absoluta con tus lentes:\n\n" .
+                     "**Receta de oro para paisajes y arquitectura en la D5500:**\n" .
+                     "1. Girá el dial a modo **A** (Prioridad a la Apertura).\n" .
+                     "2. Poné el diafragma en **f/8** (el sweet spot de nitidez de borde a borde; jamás cierres a f/22 por difracción).\n" .
+                     "3. Botón táctil **[i]** -> **ISO 100** para rango dinámico limpio.\n" .
+                     "4. Enfoque en **AF-S** y tocá la pantalla a un tercio del fondo para aprovechar la distancia hiperfocal.\n" .
+                     "5. Si vas a caminar mucho por la ciudad, llevate el **18-55mm VR II** (195g) y ahorrate 365 gramos al cuello.";
         } else {
             $reply = "¡Acá estoy Martín! Con tu **Nikon D5500** y tus dos lentes (**18-55mm VR II** y **18-200mm VR I**) tenés un combo para romperla en cualquier situación.\n\n" .
                      "Preguntame lo que quieras sobre qué lente llevarte en la mochila, cómo configurar la cámara para una toma difícil, o qué botones tocar en la pantalla táctil.\n\n" .
